@@ -40,6 +40,8 @@ class Arc:
         elif component == "source":
             self.volts = value
         '''
+    def getValue(self):
+        return self.value
         
 class Graph:
 
@@ -112,23 +114,98 @@ class Graph:
             print("]")
 
 
+    def dijkstra(self, id1, id2, find):
+        funct = None
+        if find:
+            funct = lambda a,b: a>b
+        else:
+            funct = lambda a,b: a<b
+        queue = [id1]
+        visted = []
+        output = []
+        initial = self.getById(id1)
+        final = self.getById(id2)
+        finished = False
+        chart = []
         
+        for i in range(self.nodesCount):
+            chart_i = [self.nodes[i].getId(),-1, ""]
+            chart += [chart_i]
+            
+        for i in chart:
+            print(i)
 
-'''
+        while not finished:
+            
+            current = queue[0]
+            current_i = self.nodes.index(self.getById(current))
+            queue = queue[1:]
+            #print(current)
+            if current == initial.getId():
+                chart[current_i][1] = 0
+            else:
+                preds = []
+                values = []
+                pred = ""
+                path = -1
+                for i in self.adMatrix:
+                    if i[current_i] != None:
+                        values += [i[current_i].getValue()]
+                        preds += [self.adMatrix.index(i)]
+                #print(preds, values)        
+                tmp_path = 0
+                for i in range(len(preds)):
+                    if chart[preds[i]][1] != -1:
+                        tmp_path = values[i] + chart[preds[i]][1]
+                    if path == -1:
+                        path = tmp_path
+                        pred = chart[preds[i]][0]
+                    else:
+                        if funct(tmp_path, path):
+                            path = tmp_path
+                            pred = chart[preds[i]][0]
+
+                chart[current_i][1] = path
+                chart[current_i][2] = pred
+
+                for i in chart:
+                    print(i)
+                
+                
+            for j in range(len(self.adMatrix[current_i])):
+                if self.adMatrix[current_i][j] != None and not self.nodes[j].getId() in queue:
+                    queue += [self.nodes[j].getId()]
+            #print(queue)
+
+            if current == final.getId():
+                tmp = final.getId()
+                tmp_i = current_i
+                output += [final.getId()]
+                while tmp != initial.getId():
+                    #print(tmp)
+                    output += [chart[tmp_i][2]]
+                    tmp = chart[tmp_i][2]
+                    tmp_i = self.nodes.index(self.getById(tmp))
+                finished = True
+                break
+        twist_out = []
+        for x in output:
+            twist_out = [x]+twist_out
+        output = twist_out
+        print(output)
+                
+                        
+
 def main():
     graph = Graph()
-    graph.addNode("1")
-    graph.printGraph()
-    graph.addNode("2")
-    graph.printGraph()
-    graph.addArc("1", "2", 5)
-    graph.printGraph()
-    graph.addArc("2", "1", 8)
-    graph.printGraph()
-    graph.addNode("3")
-    graph.addArc("3", "3", 14)
-    graph.printGraph()
+    graph.addNode("A")
+    graph.addNode("B")
+    graph.addNode("C")
+    graph.addArc("A", "B", "resistor", 10)
+    graph.addArc("B", "C", "resistor", 20)
+    graph.addArc("A", "C", "resistor", 40)
+    graph.dijkstra("A", "C", True)
 
 
 main()
-'''
+
