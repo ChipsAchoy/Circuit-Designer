@@ -137,6 +137,10 @@ class Graph:
 
         while not finished:
             
+            if queue == []:
+                print("No hay camino hacia ese nodo")
+                finished = True
+                break
             current = queue[0]
             current_i = self.nodes.index(self.getById(current))
             queue = queue[1:]
@@ -152,7 +156,8 @@ class Graph:
                     if i[current_i] != None:
                         values += [i[current_i].getValue()]
                         preds += [self.adMatrix.index(i)]
-                #print(preds, values)        
+                #print(preds, values)
+                
                 tmp_path = 0
                 for i in range(len(preds)):
                     if chart[preds[i]][1] != -1:
@@ -170,12 +175,11 @@ class Graph:
 
                 for i in chart:
                     print(i)
-                
-                
+                 
             for j in range(len(self.adMatrix[current_i])):
                 if self.adMatrix[current_i][j] != None and not self.nodes[j].getId() in queue:
                     queue += [self.nodes[j].getId()]
-            #print(queue)
+
 
             if current == final.getId():
                 tmp = final.getId()
@@ -193,19 +197,67 @@ class Graph:
             twist_out = [x]+twist_out
         output = twist_out
         print(output)
-                
-                        
+
+def radixSort(listIn):
+    
+    n = 0
+    biggest = 0
+    for elem in listIn:
+        if elem > biggest:
+            biggest = elem
+        n += 1
+    biggest = len(str(biggest))
+    print(biggest)
+    print(listIn)
+    
+    for x in range(biggest):
+        print("###########################")
+        listOut = []
+        for i in range(len(listIn)):
+            listOut += [0]
+        digit = 10**x
+        integers = []
+        for i in range(10):
+            integers += [0]
+        for elem in listIn:
+            dig = (elem//digit)%10
+            #print(dig)
+            integers[dig] += 1
+        for i in range(len(integers)):
+            if i != 0:
+                integers[i] += integers[i-1]
+        #print(integers)
+        print(listIn)
+        for i in range(len(listIn)):
+            n = len(listIn) - (i+1)
+            dig = (listIn[n]//digit)%10
+            integers[dig] -= 1
+            num = listIn[n]
+            listOut[integers[dig]] = num
+        print(listOut)
+        listIn = listOut
+    print(listOut)    
 
 def main():
+
+    radixSort([170, 45, 75, 90, 802, 24, 2, 66])
+    
+    '''
     graph = Graph()
     graph.addNode("A")
     graph.addNode("B")
     graph.addNode("C")
+    graph.addNode("D")
+    graph.addNode("E")
     graph.addArc("A", "B", "resistor", 10)
     graph.addArc("B", "C", "resistor", 20)
+    graph.addArc("B", "D", "resistor", 40)
+    graph.addArc("C", "D", "resistor", 10)
     graph.addArc("A", "C", "resistor", 40)
-    graph.dijkstra("A", "C", True)
-
+    graph.addArc("C", "E", "resistor", 40)
+    graph.addArc("D", "A", "resistor", 20)
+    graph.dijkstra("D", "E", False)
+    '''
 
 main()
 
