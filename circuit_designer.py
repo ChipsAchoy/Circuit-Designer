@@ -236,12 +236,30 @@ def radixSort(listIn):
             listOut[integers[dig]] = num
         print(listOut)
         listIn = listOut
-    print(listOut)    
+    return listOut
+
+def insertionSort(listOrd):
+    position = 1
+    while position < len(listOrd):
+        ordered = False
+        i = position
+        while not ordered:
+            if listOrd[i] > listOrd[i-1] and i != 0:
+                tmp = listOrd[i]
+                listOrd[i] = listOrd[i-1]
+                listOrd[i-1] = tmp
+                i -= 1
+            else:
+                ordered = True
+        position += 1
+
+    return listOrd
 
 def main():
 
-    radixSort([170, 45, 75, 90, 802, 24, 2, 66])
-    
+    print(radixSort([170, 45, 75, 90, 802, 24, 2, 66]))
+    print(insertionSort([170, 45, 75, 90, 802, 24, 2, 66]))
+
     '''
     graph = Graph()
     graph.addNode("A")
