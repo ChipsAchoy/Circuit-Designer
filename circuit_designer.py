@@ -39,7 +39,6 @@ class Arc:
         elif component == "source":
             self.volts = value
         '''
-
     def getValue(self):
         return self.value
 
@@ -68,13 +67,13 @@ class Graph:
         self.nodesCount += 1
         self.nodes += [Node(ident)]
         if self.nodesCount == 1:
-            self.adMatrix += [[None]]
+            self.adMatrix += [[[None]]]
         else:
             tmp = []
             for i in range(self.nodesCount):
                 tmp_aij = []
                 for j in range(self.nodesCount):
-                    tmp_aij += [None]
+                    tmp_aij += [[None]]
                 tmp += [tmp_aij]
 
             trans = self.adMatrix
@@ -88,8 +87,11 @@ class Graph:
         if self.checkNode(id1) and self.checkNode(id2):
             index1 = self.nodes.index(self.getById(id1))
             index2 = self.nodes.index(self.getById(id2))
-            self.adMatrix[index1][index2] = arc
-
+            if self.adMatrix[index1][index2] != [None]:
+                self.adMatrix[index1][index2] += [arc]
+            else:
+                self.adMatrix[index1][index2] = [arc]
+                
     def deleteNode(self, ident):  # Elimina los arcos asociados a ese nodo tanto de ida como de vuleta
         if self.checkNode(ident):
             tmp = []
@@ -107,11 +109,15 @@ class Graph:
         for i in self.adMatrix:
             print("[", end="")
             for j in i:
-                if j != None:
-                    print(j.component + ":" + str(j.value) + " ", end="")
-                else:
-                    print("None ", end="")
-            print("]")
+                print("[", end="")
+                for x in j:
+                    if x != None:
+                        print(x.component + ":" + str(x.value) + " ", end="")
+                    else:
+                        print("None ", end="")
+                print("]", end="") 
+                    
+            print("]")  
 
     def getDictRes(self): #Retorna un diccionario con los nombres de resistencias y sus nombres
         result = {}
@@ -132,10 +138,20 @@ class Graph:
 
     def dijkstra(self, id1, id2, find):
         funct = None
+        mat = []
         if find:
             funct = lambda a, b: a > b
         else:
             funct = lambda a, b: a < b
+        for i in self.adMatrix:
+            mat_ij = []
+            for j in i:
+                if find:
+                    mat_ij += [max(j)]
+                else:
+                    mat_ij += [min(j)]
+
+        print(mat)
         queue = [id1]
         visted = []
         output = []
@@ -281,10 +297,11 @@ def searchNameRes(dictionary, list): #Busca el nombre de las resistencias tomand
     return result
 
 def main():
+    
     """
     print(radixSort([170, 45, 75, 90, 802, 24, 2, 66]))
     print(insertionSort([170, 45, 75, 90, 802, 24, 2, 66]))
-"""
+    """
 
     graph = Graph()
     graph.addNode("A")
@@ -293,14 +310,17 @@ def main():
     graph.addNode("D")
     graph.addNode("E")
     graph.addArc("A", "B", "R1", 10)
+    graph.addArc("A", "B", "R8", 40)
     graph.addArc("B", "C", "R2", 20)
     graph.addArc("B", "D", "R3", 40)
     graph.addArc("C", "D", "R4", 10)
     graph.addArc("A", "C", "R5", 40)
     graph.addArc("C", "E", "R6", 40)
     graph.addArc("D", "A", "R7", 20)
+    graph.printGraph()
+    graph.dijkstra("A", "B", False)
     # graph.dijkstra("D", "E", False)
-    slist = insertionSort(graph.getRes())
-    searchNameRes(graph.getDictRes(),slist)
+    #slist = insertionSort(graph.getRes())
+    #searchNameRes(graph.getDictRes(),slist)
 
 main()
