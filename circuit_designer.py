@@ -3,6 +3,36 @@
 '''
 
 
+'''
+Clase Node: Nodo utilizado en el grafo
+    Atributos: id(String), volt(float), current(float)
+
+    Metodos:
+    __init__(ident):
+        E: Un string que identifia al nodo
+        S: -
+        R: -
+    setVolt(volt):
+        E: Obtiene un valor flotante para asociarlo al voltaje
+        S: -
+        R: -
+    setCurrent(cur):
+        E: Obtiene un valor flotante para asociarlo al current
+        S: -
+        R: -
+    getVolt():
+        E: -
+        S: Retorna el voltaje asociado al nodo
+        R: -
+    getCurrent():
+        E: -
+        S: Retorna la corriente asociada al nodo
+        R: -
+    getId():
+        E: -
+        S: Retorna el identificar del nodo
+        R: -
+'''
 class Node:
 
     def __init__(self, ident):
@@ -25,23 +55,28 @@ class Node:
     def getId(self):
         return self.id
 
+'''
+Clase Arc: 
+'''
 
 class Arc:
 
-    def __init__(self, component, value=0):
+    def __init__(self, component, name, value=0):
         self.value = value
         self.component = component
-        '''
+        self.name = name
+        
         self.ohms = 0
         self.volts = 0
         if component == "resistor":
             self.ohms = value
         elif component == "source":
             self.volts = value
-        '''
+        
     def getValue(self):
         return self.value
-
+    def getName(self):
+        return self.name
 
 class Graph:
 
@@ -82,8 +117,8 @@ class Graph:
                     tmp[i][j] = trans[i][j]
             self.adMatrix = tmp
 
-    def addArc(self, id1, id2, component, value=0):
-        arc = Arc(component, value)
+    def addArc(self, id1, id2, component, name, value=0):
+        arc = Arc(component, name, value)
         if self.checkNode(id1) and self.checkNode(id2):
             index1 = self.nodes.index(self.getById(id1))
             index2 = self.nodes.index(self.getById(id2))
@@ -124,7 +159,7 @@ class Graph:
         for i in self.adMatrix:
             for j in i:
                 if j != None:
-                    temp = {j.component: j.value}
+                    temp = {j.name: j.value}
                     result.update(temp)
         return result
 
@@ -136,6 +171,13 @@ class Graph:
                     result+=[j.value]
         return result
 
+    def selectedElement(self, elems, func):
+        selected = elems[0]
+        for elem in elems:
+            if func(elem.getValue(), selected.getValue()):
+                selected = elem
+        return selected
+    
     def dijkstra(self, id1, id2, find):
         funct = None
         mat = []
@@ -143,18 +185,27 @@ class Graph:
             funct = lambda a, b: a > b
         else:
             funct = lambda a, b: a < b
+            
         for i in self.adMatrix:
             mat_ij = []
             for j in i:
-                if find:
-                    mat_ij += [max(j)]
+                if j != [None]:
+                    mat_ij += [self.selectedElement(j, funct)]
                 else:
-                    mat_ij += [min(j)]
-
-        print(mat)
+                    mat_ij += [None]
+            mat += [mat_ij]
+        for i in mat:
+            print("[", end="")
+            for j in i:
+                if j != None:
+                    print(j.getValue(), end=" ")
+                else:
+                    print("None", end= " ")
+            print("]")
+                
         queue = [id1]
-        visted = []
         output = []
+        arcs = []
         initial = self.getById(id1)
         final = self.getById(id2)
         finished = False
@@ -184,10 +235,10 @@ class Graph:
                 values = []
                 pred = ""
                 path = -1
-                for i in self.adMatrix:
+                for i in mat:
                     if i[current_i] != None:
                         values += [i[current_i].getValue()]
-                        preds += [self.adMatrix.index(i)]
+                        preds += [mat.index(i)]
                 # print(preds, values)
 
                 tmp_path = 0
@@ -208,8 +259,8 @@ class Graph:
                 for i in chart:
                     print(i)
 
-            for j in range(len(self.adMatrix[current_i])):
-                if self.adMatrix[current_i][j] != None and not self.nodes[j].getId() in queue:
+            for j in range(len(mat[current_i])):
+                if mat[current_i][j] != None and not self.nodes[j].getId() in queue:
                     queue += [self.nodes[j].getId()]
 
             if current == final.getId():
@@ -227,6 +278,17 @@ class Graph:
         for x in output:
             twist_out = [x] + twist_out
         output = twist_out
+
+        for o in range(len(output)):
+            if o+1 < len(output):
+                i = self.nodes.index(self.getById(output[o]))
+                j = self.nodes.index(self.getById(output[o+1]))
+                arcs += [mat[i][j]]
+            else:
+                break
+        for i in arcs:
+            print(i.getName())
+            
         print(output)
 
 
@@ -298,27 +360,23 @@ def searchNameRes(dictionary, list): #Busca el nombre de las resistencias tomand
 
 def main():
     
-    """
+
     print(radixSort([170, 45, 75, 90, 802, 24, 2, 66]))
     print(insertionSort([170, 45, 75, 90, 802, 24, 2, 66]))
-    """
-
+    
     graph = Graph()
     graph.addNode("A")
     graph.addNode("B")
     graph.addNode("C")
     graph.addNode("D")
-    graph.addNode("E")
-    graph.addArc("A", "B", "R1", 10)
-    graph.addArc("A", "B", "R8", 40)
-    graph.addArc("B", "C", "R2", 20)
-    graph.addArc("B", "D", "R3", 40)
-    graph.addArc("C", "D", "R4", 10)
-    graph.addArc("A", "C", "R5", 40)
-    graph.addArc("C", "E", "R6", 40)
-    graph.addArc("D", "A", "R7", 20)
+    #graph.addNode("E")
+    graph.addArc("A", "B", "resistor", "R1", 40)
+    graph.addArc("B", "C", "resistor", "R2", 10)
+    graph.addArc("B", "C", "resistor", "R3", 20)
+    graph.addArc("B", "C", "resistor", "R4", 30)
+    graph.addArc("C", "D", "resistor", "R5", 50)
     graph.printGraph()
-    graph.dijkstra("A", "B", False)
+    graph.dijkstra("B", "D", False)
     # graph.dijkstra("D", "E", False)
     #slist = insertionSort(graph.getRes())
     #searchNameRes(graph.getDictRes(),slist)
