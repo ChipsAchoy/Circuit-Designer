@@ -123,17 +123,19 @@ class Graph:
         result = {}
         for i in self.adMatrix:
             for j in i:
-                if j != None:
-                    temp = {j.component: j.value}
-                    result.update(temp)
+                for x in j:
+                    if x != None:
+                        temp = {x.component: x.value}
+                        result.update(temp)
         return result
 
     def getRes(self): #Retorna una lista con las resistencias desordenadas
         result = []
         for i in self.adMatrix:
             for j in i:
-                if j != None:
-                    result+=[j.value]
+                for x in j:
+                    if x != None:
+                        result+=[x.value]
         return result
 
     def dijkstra(self, id1, id2, find):
@@ -317,10 +319,12 @@ def main():
     graph.addArc("A", "C", "R5", 40)
     graph.addArc("C", "E", "R6", 40)
     graph.addArc("D", "A", "R7", 20)
-    graph.printGraph()
-    graph.dijkstra("A", "B", False)
+    #graph.printGraph()
+    #graph.dijkstra("A", "B", False)
     # graph.dijkstra("D", "E", False)
-    #slist = insertionSort(graph.getRes())
-    #searchNameRes(graph.getDictRes(),slist)
+   # print(graph.getRes())
+    #print(graph.getDictRes())
+   # searchNameRes(graph.getDictRes(),slist)
+    print(radixSort(["Aablo","Juan","Isai", "Antony"]))
 
 main()
