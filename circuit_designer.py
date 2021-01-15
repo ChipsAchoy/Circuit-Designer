@@ -56,7 +56,22 @@ class Node:
         return self.id
 
 '''
-Clase Arc: 
+Clase Arc: Arcos utilizados en el grafo, pueden representar tanto una resistencia como una fuente
+    Atributos: value(float), component(String), name(String), ohms(float), volts(float)
+
+    Metodos:
+    __init__(component, name, value):
+        E: Dos string y un valor numerico (preferiblemente float)
+        S: -
+        R: -
+    getValue():
+        E: -
+        S: El valor asociado al arco (varia con el componente)
+        R: -
+    getName():
+        E: -
+        S: El nombre del arco
+        R: -
 '''
 
 class Arc:
@@ -77,6 +92,46 @@ class Arc:
         return self.value
     def getName(self):
         return self.name
+
+'''
+Clase Grafo: Implementacion del grafo por medio de una matriz de adyacencia y una lista que contiene la referencia a los nodos
+    Atributos: adMatrix(matriz tridimensional), nodes(lista), nodesCount(entero)
+
+    Metodos:
+    checkNode(ident):
+        E: Identificador de un nodo (String)
+        S: Boolean que indica si el nodo esta en el grafo
+        R: -
+    getById(ident):
+        E: Identificador de un nodo (String) 
+        S: La referencia al objeto Node
+        R: -
+    addNode(ident):
+        E: Identificador del nuevo nodo
+        S: -
+        R: -
+    addArc(id1, id2, component, name, value):
+        E: Las dos entradas iniciales son los identificadores de los nodos en el camino id1->id2. Luego se agrega el tipo de componente, nombre y valor asociado
+        S: -
+        R: -
+    deleteNode(ident):
+        E: Identificador del nodo a eliminar con todos sus arcos asociados
+        S: -
+        R: El nodo debe estar en el grafo
+    getNodes():
+        E: -
+        S: La lista de nodos del grafo
+        R: -
+    selectedElements(elems, func): #Funcion auxiliar de dijkstra
+        E: Una lista de elementos y una funcion para evaluar dichos elementos
+        S: Retorna el elemento menor o mayor segun sea necesario
+        R: -
+    dijkstra(id1, id2, find):
+        E: Los identificadores de los nodos entre los que se busca el camino especifico, mientras que la variable find indica si es el mas largo o mas corto
+        S: El camino mas corto o largo entre los nodos segun lo deseado 
+        R: -
+    
+'''
 
 class Graph:
 
@@ -293,7 +348,12 @@ class Graph:
             
         print(output)
 
-
+'''
+radixSort(listIn):
+    E: Lista de enteros
+    S: Retorna las lista ordenada de forma ascendente
+    R: -
+'''
 def radixSort(listIn):
     n = 0
     biggest = 0
@@ -333,7 +393,12 @@ def radixSort(listIn):
         listIn = listOut
     return listOut
 
-
+'''
+insertionSort(listOrd):
+    E: Lista de elementos comparables
+    S: Lista ordenada de forma descendente
+    R: -
+'''
 def insertionSort(listOrd):
 
     position = 1
@@ -351,7 +416,12 @@ def insertionSort(listOrd):
         position += 1
     return listOrd
 
-
+'''
+shellSort(listOrd):
+    E: Lista de elementos comparables
+    S: Lista ordenada de forma ascendente
+    R: -
+'''
 def shellSort(listOrd):
     ordered = False
     gap = len(listOrd)
@@ -388,6 +458,7 @@ def shellSort(listOrd):
             ordered = True
     return listOrd           
 
+
 def searchNameRes(dictionary, list): #Busca el nombre de las resistencias tomando un diccionario con estas y una lista ordenada de las resistencias
     result = {}
     for i in list:
@@ -397,6 +468,8 @@ def searchNameRes(dictionary, list): #Busca el nombre de las resistencias tomand
                 result.update(temp)
     return result
 
+
+#Funcion main del programa
 def main():
     
 
