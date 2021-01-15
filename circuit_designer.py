@@ -335,6 +335,7 @@ def radixSort(listIn):
 
 
 def insertionSort(listOrd):
+
     position = 1
     while position < len(listOrd):
         ordered = False
@@ -348,8 +349,44 @@ def insertionSort(listOrd):
             else:
                 ordered = True
         position += 1
-
     return listOrd
+
+
+def shellSort(listOrd):
+    ordered = False
+    gap = len(listOrd)
+    while not ordered:
+        gap = gap//2
+        i = 0
+        f = gap
+        print(gap)
+        if gap != 1:
+            while f != len(listOrd):
+                if listOrd[i] > listOrd[f]:
+                    tmp = listOrd[i]
+                    listOrd[i] = listOrd[f]
+                    listOrd[f] = tmp
+                i += 1
+                f += 1
+            
+            print(gap, listOrd)
+        else:
+            i = 1
+            position = 1
+            while position < len(listOrd):
+                orderedf = False
+                i = position
+                while not orderedf:
+                    if listOrd[i] < listOrd[i - 1] and i != 0:
+                        tmp = listOrd[i]
+                        listOrd[i] = listOrd[i - 1]
+                        listOrd[i - 1] = tmp
+                        i -= 1
+                    else:
+                        orderedf = True
+                position += 1
+            ordered = True
+    return listOrd           
 
 def searchNameRes(dictionary, list): #Busca el nombre de las resistencias tomando un diccionario con estas y una lista ordenada de las resistencias
     result = {}
@@ -363,8 +400,8 @@ def searchNameRes(dictionary, list): #Busca el nombre de las resistencias tomand
 def main():
     
 
-    print(radixSort([170, 45, 75, 90, 802, 24, 2, 66]))
-    print(insertionSort([170, 45, 75, 90, 802, 24, 2, 66]))
+    #print(radixSort([170, 45, 75, 90, 802, 24, 2, 66]))
+    print("x",shellSort([170, 45, 75, 90, 802, 24, 2, 66]))
     
     graph = Graph()
     graph.addNode("A")
@@ -379,10 +416,10 @@ def main():
     graph.addArc("C", "D", "resistor", "R5", 50)
     graph.printGraph()
     graph.dijkstra("B", "D", False)
-    # graph.dijkstra("D", "E", False)
-   # print(graph.getRes())
+    
+    #print(graph.getRes())
     #print(graph.getDictRes())
-   # searchNameRes(graph.getDictRes(),slist)
-    print(radixSort(["Aablo","Juan","Isai", "Antony"]))
+    #searchNameRes(graph.getDictRes(),slist)
+    print(shellSort(["Aablo","Juan","Isai", "Antony"]))
 
 main()
