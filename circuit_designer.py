@@ -1,7 +1,7 @@
 '''
     Tercer Proyecto Estructuras de Datos I
 '''
-
+from ordering_algorithms import *
 
 '''
 Clase Node: Nodo utilizado en el grafo
@@ -33,6 +33,8 @@ Clase Node: Nodo utilizado en el grafo
         S: Retorna el identificar del nodo
         R: -
 '''
+
+
 class Node:
 
     def __init__(self, ident):
@@ -55,6 +57,7 @@ class Node:
     def getId(self):
         return self.id
 
+
 '''
 Clase Arc: Arcos utilizados en el grafo, pueden representar tanto una resistencia como una fuente
     Atributos: value(float), component(String), name(String), ohms(float), volts(float)
@@ -74,24 +77,27 @@ Clase Arc: Arcos utilizados en el grafo, pueden representar tanto una resistenci
         R: -
 '''
 
+
 class Arc:
 
     def __init__(self, component, name, value=0):
         self.value = value
         self.component = component
         self.name = name
-        
+
         self.ohms = 0
         self.volts = 0
         if component == "resistor":
             self.ohms = value
         elif component == "source":
             self.volts = value
-        
+
     def getValue(self):
         return self.value
+
     def getName(self):
         return self.name
+
 
 '''
 Clase Grafo: Implementacion del grafo por medio de una matriz de adyacencia y una lista que contiene la referencia a los nodos
@@ -132,6 +138,7 @@ Clase Grafo: Implementacion del grafo por medio de una matriz de adyacencia y un
         R: -
     
 '''
+
 
 class Graph:
 
@@ -181,7 +188,7 @@ class Graph:
                 self.adMatrix[index1][index2] += [arc]
             else:
                 self.adMatrix[index1][index2] = [arc]
-                
+
     def deleteNode(self, ident):  # Elimina los arcos asociados a ese nodo tanto de ida como de vuleta
         if self.checkNode(ident):
             tmp = []
@@ -205,11 +212,11 @@ class Graph:
                         print(x.component + ":" + str(x.value) + " ", end="")
                     else:
                         print("None ", end="")
-                print("]", end="") 
-                    
-            print("]")  
+                print("]", end="")
 
-    def getDictRes(self): #Retorna un diccionario con los nombres de resistencias y sus nombres
+            print("]")
+
+    def getDictRes(self):  # Retorna un diccionario con los nombres de resistencias y sus nombres
         result = {}
         for i in self.adMatrix:
             for j in i:
@@ -219,13 +226,13 @@ class Graph:
                         result.update(temp)
         return result
 
-    def getRes(self): #Retorna una lista con las resistencias desordenadas
+    def getRes(self):  # Retorna una lista con las resistencias desordenadas
         result = []
         for i in self.adMatrix:
             for j in i:
                 for x in j:
                     if x != None:
-                        result+=[x.value]
+                        result += [x.value]
         return result
 
     def selectedElement(self, elems, func):
@@ -234,7 +241,7 @@ class Graph:
             if func(elem.getValue(), selected.getValue()):
                 selected = elem
         return selected
-    
+
     def dijkstra(self, id1, id2, find):
         funct = None
         mat = []
@@ -242,7 +249,7 @@ class Graph:
             funct = lambda a, b: a > b
         else:
             funct = lambda a, b: a < b
-            
+
         for i in self.adMatrix:
             mat_ij = []
             for j in i:
@@ -257,9 +264,9 @@ class Graph:
                 if j != None:
                     print(j.getValue(), end=" ")
                 else:
-                    print("None", end= " ")
+                    print("None", end=" ")
             print("]")
-                
+
         queue = [id1]
         output = []
         arcs = []
@@ -337,151 +344,29 @@ class Graph:
         output = twist_out
 
         for o in range(len(output)):
-            if o+1 < len(output):
+            if o + 1 < len(output):
                 i = self.nodes.index(self.getById(output[o]))
-                j = self.nodes.index(self.getById(output[o+1]))
+                j = self.nodes.index(self.getById(output[o + 1]))
                 arcs += [mat[i][j]]
             else:
                 break
         for i in arcs:
             print(i.getName())
-            
+
         print(output)
 
-'''
-radixSort(listIn):
-    E: Lista de enteros
-    S: Retorna las lista ordenada de forma ascendente
-    R: -
-'''
-def radixSort(listIn):
-    n = 0
-    biggest = 0
-    for elem in listIn:
-        if elem > biggest:
-            biggest = elem
-        n += 1
-    biggest = len(str(biggest))
-    print(biggest)
-    print(listIn)
 
-    for x in range(biggest):
-        print("###########################")
-        listOut = []
-        for i in range(len(listIn)):
-            listOut += [0]
-        digit = 10 ** x
-        integers = []
-        for i in range(10):
-            integers += [0]
-        for elem in listIn:
-            dig = (elem // digit) % 10
-            # print(dig)
-            integers[dig] += 1
-        for i in range(len(integers)):
-            if i != 0:
-                integers[i] += integers[i - 1]
-        # print(integers)
-        print(listIn)
-        for i in range(len(listIn)):
-            n = len(listIn) - (i + 1)
-            dig = (listIn[n] // digit) % 10
-            integers[dig] -= 1
-            num = listIn[n]
-            listOut[integers[dig]] = num
-        print(listOut)
-        listIn = listOut
-    return listOut
-
-'''
-insertionSort(listOrd):
-    E: Lista de elementos comparables
-    S: Lista ordenada de forma descendente
-    R: -
-'''
-def insertionSort(listOrd):
-
-    position = 1
-    while position < len(listOrd):
-        ordered = False
-        i = position
-        while not ordered:
-            if listOrd[i] > listOrd[i - 1] and i != 0:
-                tmp = listOrd[i]
-                listOrd[i] = listOrd[i - 1]
-                listOrd[i - 1] = tmp
-                i -= 1
-            else:
-                ordered = True
-        position += 1
-    return listOrd
-
-'''
-shellSort(listOrd):
-    E: Lista de elementos comparables
-    S: Lista ordenada de forma ascendente
-    R: -
-'''
-def shellSort(listOrd):
-    ordered = False
-    gap = len(listOrd)
-    while not ordered:
-        gap = gap//2
-        i = 0
-        f = gap
-        print(gap)
-        if gap != 1:
-            while f != len(listOrd):
-                if listOrd[i] > listOrd[f]:
-                    tmp = listOrd[i]
-                    listOrd[i] = listOrd[f]
-                    listOrd[f] = tmp
-                i += 1
-                f += 1
-            
-            print(gap, listOrd)
-        else:
-            i = 1
-            position = 1
-            while position < len(listOrd):
-                orderedf = False
-                i = position
-                while not orderedf:
-                    if listOrd[i] < listOrd[i - 1] and i != 0:
-                        tmp = listOrd[i]
-                        listOrd[i] = listOrd[i - 1]
-                        listOrd[i - 1] = tmp
-                        i -= 1
-                    else:
-                        orderedf = True
-                position += 1
-            ordered = True
-    return listOrd           
-
-
-def searchNameRes(dictionary, list): #Busca el nombre de las resistencias tomando un diccionario con estas y una lista ordenada de las resistencias
-    result = {}
-    for i in list:
-        for j in dictionary:
-            if i == dictionary.get(j):
-                temp = {j:i}
-                result.update(temp)
-    return result
-
-
-#Funcion main del programa
+# Funcion main del programa
 def main():
-    
+    # print(radixSort([170, 45, 75, 90, 802, 24, 2, 66]))
+    print("x", shellSort([170, 45, 75, 90, 802, 24, 2, 66]))
 
-    #print(radixSort([170, 45, 75, 90, 802, 24, 2, 66]))
-    print("x",shellSort([170, 45, 75, 90, 802, 24, 2, 66]))
-    
     graph = Graph()
     graph.addNode("A")
     graph.addNode("B")
     graph.addNode("C")
     graph.addNode("D")
-    #graph.addNode("E")
+    # graph.addNode("E")
     graph.addArc("A", "B", "resistor", "R1", 40)
     graph.addArc("B", "C", "resistor", "R2", 10)
     graph.addArc("B", "C", "resistor", "R3", 20)
@@ -489,10 +374,11 @@ def main():
     graph.addArc("C", "D", "resistor", "R5", 50)
     graph.printGraph()
     graph.dijkstra("B", "D", False)
-    
-    #print(graph.getRes())
-    #print(graph.getDictRes())
-    #searchNameRes(graph.getDictRes(),slist)
-    print(shellSort(["Aablo","Juan","Isai", "Antony"]))
+
+    # print(graph.getRes())
+    # print(graph.getDictRes())
+    # searchNameRes(graph.getDictRes(),slist)
+    print(shellSort(["Aablo", "Juan", "Isai", "Antony"]))
+
 
 main()
