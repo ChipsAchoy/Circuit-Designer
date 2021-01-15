@@ -11,6 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3314e97c-7044-4b42-9432-008802b512a9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/dijkstra.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ordering_algorithms.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tools.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/circuit_designer.py" beforeDir="false" afterPath="$PROJECT_DIR$/circuit_designer.py" afterDir="false" />
@@ -143,7 +145,7 @@
       <workItem from="1610431727311" duration="4181000" />
       <workItem from="1610563110987" duration="6713000" />
       <workItem from="1610688523162" duration="695000" />
-      <workItem from="1610752369614" duration="729000" />
+      <workItem from="1610752369614" duration="1092000" />
     </task>
     <task id="LOCAL-00001" summary="Se agrega el git ignore xd">
       <created>1610166646035</created>
@@ -152,7 +154,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610166646035</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Se ordenan archivos">
+      <created>1610753463425</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1610753463425</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -183,10 +192,11 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Se agrega el git ignore xd" />
-    <option name="LAST_COMMIT_MESSAGE" value="Se agrega el git ignore xd" />
+    <MESSAGE value="Se ordenan archivos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Se ordenan archivos" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Circuit_Designer$circuit_designer.coverage" NAME="circuit_designer Coverage Results" MODIFIED="1610688549111" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Circuit_Designer$circuit_designer.coverage" NAME="circuit_designer Coverage Results" MODIFIED="1610753270412" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Circuit_Designer$OrderingAlgorithms.coverage" NAME="OrderingAlgorithms Coverage Results" MODIFIED="1610563179097" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/OrderingAlgorithms" />
     <SUITE FILE_PATH="coverage/Circuit_Designer$Componentes_Visuales.coverage" NAME="Componentes Visuales Coverage Results" MODIFIED="1610752467369" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
