@@ -77,8 +77,6 @@ shellSort(listOrd):
     S: Lista ordenada de forma ascendente
     R: -
 '''
-
-
 def shellSort(listOrd):
     ordered = False
     gap = len(listOrd)
