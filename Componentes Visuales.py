@@ -1,6 +1,7 @@
 import tkinter
 from tkinter import *
 
+
 def drag_start(event):
     widget = event.widget
     widget.startX = event.x
@@ -16,7 +17,7 @@ def drag_motion(event):
 def hola():
     print("Se clickeo el boton")
 
-#####################################################
+
 #Caracteristicas de la ventana
 ventana = Tk()
 ventana.title("Circuit Designer")
@@ -49,134 +50,32 @@ label.bind("<B1-Motion>", drag_motion)
 label2.bind("<Button-1>", drag_start)
 label2.bind("<B1-Motion>", drag_motion)
 
-ventana.mainloop()
-
-#function for create a metrix
-def makeMatriz(rows,columns):
-    matriz = []
-    for i in range(rows):
-        lista = []
-        for j in range(columns):
-            lista += [[]]
-        matriz += [lista]
-    return matriz
-
-#Incio de la ventana Administrador
-'''class Cliente():
-    def __init__(self):
-        self.Cliente = Toplevel()
-        self.Cliente.resizable(False, False)
-        self.Cliente.geometry("1000x600")
-        self.canvas = Canvas(self.Cliente, width=1400, height=700, bg='white')
-        self.canvas.place(x=0,y=0)
-
-#Matriz y su tamaño
-        self.matriz = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-        self.size = 60
-
-        self.PintarMatriz()
-        self.canvas.bind("<Button-1>", self.MatrizPosicion)
-
-    def SALIR(self):
-        self.Cliente.quit()
-
-#Dibuja la matriz en el canvas
-    def PintarMatriz(self):
-        for j in range(0, len((self.matriz[0]))):
-            for i in range(0,len(self.matriz)):
-                color = self.get_color(i, j)
-                self.canvas.create_rectangle(60 * (j + 1), 60 * (i + 1), 60 * (j + 1) + self.size, 60 * (i + 1) + self.size, fill = color)
-                #bloque = self.matriz[i][j]
-
-    def get_color(self, i, j):
-            return "red"
-
-#Indica la posicion de fila y columna dentro de la matriz
-    def MatrizPosicion(self, eventorigin):
-        columna = eventorigin.x // self.size - 1
-        fila = eventorigin.y // self.size - 1
-        if 0 <= fila < len(self.matriz) and 0 <= columna < len(self.matriz[0]):
-            if columna + self.bloqueActual[1] <= len(self.matriz[0]):
-                for i in range(0,self.bloqueActual[1]):
-                    self.matriz[fila][columna+i] = self.bloqueActual[0]
-                self.PintarMatriz()
-            print(self.matriz)
-            #self.get_color(fila, columna)
-            print("Fila: ", fila, "Columna: ", columna)
-
-window = Tk()
-window.title("Circuit Designer")
-window.geometry("1000x600")
-window.resizable(False,False)
-#start = Principal_Menu(window)
-window.mainloop()'''
-
 class Ventana_Principal:
 
     def __init__(self, master):
-        self.canvas = Canvas(master, width = 1000, height = 600, highlightthickness = 0, relief = "ridge")
+        self.canvas = Canvas(master, width = 700, height = 600, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x=0, y=0)
-        self.matrix = [ [0,0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0,0],]
+        self.matriz = []
+        for i in range(10):  # El numero adentro es la cantiad de filas
+            self.matriz.append([0] * 12)  # El numero despues del * es la cantidad de columnas
         self.size = 50
-        self.ini = 50
-        self.paint()
+        self.paint(0,0)
 
         self.canvas.bind("<Button-1>", self.key_pressed)
 
-    def paint(self):
-        return self.paint_aux(0,0)
-
-    def paint_aux(self, i, j):
-        if i == len(self.matrix):
+    def paint(self, i, j):
+        if i == len(self.matriz):
             return 0
-        elif j == len(self.matrix[0]):
-            return self.paint_aux(i+1,0)
+        elif j == len(self.matriz[0]):
+            return self.paint(i + 1, 0)
         else:
-            torre = self.matrix[i][j]
-            color = self.get_color(torre)
-            self.canvas.create_rectangle(50*(j+1), 50*(i+1), 50*(j+1) + self.size, 50*(i+1) + self.size, fill = color)
-            #print(color)
-            return self.paint_aux(i,j+1)
-
-    def get_color(self,torre):
-        if torre == 0:
-            return "white"
-        elif torre == 1:
-            return "orange"
-        elif torre == 2:
-            return "black"
-        elif torre == 3:
-            return "purple"
-        else:
-            return "red"
+            self.canvas.create_rectangle(50*(j+1), 50*(i+1), 50*(j+1) + self.size, 50*(i+1) + self.size, fill = "white")
+            return self.paint(i, j + 1)
 
     def key_pressed(self, event):
-        print("hizo click en", event.x//10, event.y//10)
         i = (event.x//self.size) -1
         j = (event.y//self.size) -1
-        if i < len(self.matrix) and j < len(self.matrix[0]):
-            if self.matrix[i][j] == 3:
-                return self.shoot(i,j+1,0)
-            else:
-                self.matrix[i][j] = 3
-                self.paint()
-        else:
-            return 0
+        print("hizo click en", "i: "+ str(i),"j: "+ str(j))
 
-window = Tk()
-ventana_principal = Ventana_Principal(window)
-window.minsize(1000, 600)
-window.mainloop()
+Ventana_Principal(ventana)
+ventana.mainloop()
