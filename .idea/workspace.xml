@@ -11,11 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3314e97c-7044-4b42-9432-008802b512a9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/dijkstra.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ordering_algorithms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tools.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuit_designer.py" beforeDir="false" afterPath="$PROJECT_DIR$/circuit_designer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Componentes Visuales.py" beforeDir="false" afterPath="$PROJECT_DIR$/Componentes Visuales.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +50,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
-  <component name="RunManager" selected="Python.circuit_designer">
+  <component name="RunManager" selected="Python.Componentes Visuales">
     <configuration name="Componentes Visuales" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Circuit-Designer" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -68,6 +65,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Componentes Visuales.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Matriz nodo" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Circuit-Designer" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Matriz nodo.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -122,8 +141,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.circuit_designer" />
         <item itemvalue="Python.Componentes Visuales" />
+        <item itemvalue="Python.Matriz nodo" />
+        <item itemvalue="Python.circuit_designer" />
         <item itemvalue="Python.OrderingAlgorithms" />
       </list>
     </recent_temporary>
@@ -145,7 +165,10 @@
       <workItem from="1610431727311" duration="4181000" />
       <workItem from="1610563110987" duration="6713000" />
       <workItem from="1610688523162" duration="695000" />
-      <workItem from="1610752369614" duration="1092000" />
+      <workItem from="1610752369614" duration="1762000" />
+      <workItem from="1610946053761" duration="109000" />
+      <workItem from="1610947678463" duration="1176000" />
+      <workItem from="1611034916413" duration="7129000" />
     </task>
     <task id="LOCAL-00001" summary="Se agrega el git ignore xd">
       <created>1610166646035</created>
@@ -161,7 +184,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610753463425</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Se ordenan archivos">
+      <created>1610753524610</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1610753524610</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,8 +226,9 @@
     <option name="LAST_COMMIT_MESSAGE" value="Se ordenan archivos" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Circuit_Designer$Matriz_nodo.coverage" NAME="Matriz nodo Coverage Results" MODIFIED="1610947690507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Circuit_Designer$circuit_designer.coverage" NAME="circuit_designer Coverage Results" MODIFIED="1610753270412" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Circuit_Designer$OrderingAlgorithms.coverage" NAME="OrderingAlgorithms Coverage Results" MODIFIED="1610563179097" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/OrderingAlgorithms" />
-    <SUITE FILE_PATH="coverage/Circuit_Designer$Componentes_Visuales.coverage" NAME="Componentes Visuales Coverage Results" MODIFIED="1610752467369" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Circuit_Designer$Componentes_Visuales.coverage" NAME="Componentes Visuales Coverage Results" MODIFIED="1611043005843" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
