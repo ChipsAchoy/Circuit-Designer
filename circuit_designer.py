@@ -37,10 +37,16 @@ Clase Node: Nodo utilizado en el grafo
 
 class Node:
 
-    def __init__(self, ident):
+    def __init__(self, master, x, y, ident):
         self.id = ident
         self.volt = 0
         self.current = 0
+        self.position = [x,y]
+        self.master = master
+        self.x = x*50-5
+        self.y = y*50-5
+        self.radius = 10
+        self.master.create_oval(self.x, self.y, self.x+self.radius, self.y+self.radius, fill="black")
 
     def setVolt(self, volt):
         self.volt = volt
@@ -160,9 +166,9 @@ class Graph:
             if i.getId() == ident:
                 return i
 
-    def addNode(self, ident):
+    def addNode(self, master, x, y, ident):
         self.nodesCount += 1
-        self.nodes += [Node(ident)]
+        self.nodes += [Node(master, x, y, ident)]
         if self.nodesCount == 1:
             self.adMatrix += [[[None]]]
         else:
@@ -381,4 +387,4 @@ def main():
     print(shellSort(["Aablo", "Juan", "Isai", "Antony"]))
 
 
-main()
+#main()
