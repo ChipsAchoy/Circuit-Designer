@@ -87,6 +87,7 @@ class Ventana_Principal:
         self.dibujado_linea = True
         self.dibujando = True
 
+
         self.canvas.create_line(100, 0, 100, 25, width=5)
 
         self.canvas.bind("<Button-1>", self.key_pressed)
@@ -144,26 +145,25 @@ class Ventana_Principal:
         print("hizo click en", "i: " + str(i), "j: " + str(j))
 
     def line(self):
-        if self.dibujando:
-            self.a = lambda event: self.line_aux(event)
-            self.canvas.bind("<Button-1>", self.a)
-        else:
-            self.canvas.bind("<Button-1>", hola())
-            self.dibujando = True
+        self.dibujando = True
+        self.canvas.bind("<Button-1>", self.line_aux)
 
     def line_aux(self, evento):
-        if self.dibujado_linea:
-            print("1")
-            self.dibujado_linea = False
-            self.x1 = calcularCuadricula(evento.x)
-            self.y1 = calcularCuadricula(evento.y)
-        else:
-            self.x2 = calcularCuadricula(evento.x)
-            self.y2 = calcularCuadricula(evento.y)
-            self.canvas.create_line(self.x1, self.y1, self.x2, self.y2, width=5)
-            self.dibujado_linea = True
-            self.dibujando = False
+        if self.dibujando:
+            if self.dibujado_linea:
+                self.dibujado_linea = False
+                self.x1 = calcularCuadricula(evento.x)
+                self.y1 = calcularCuadricula(evento.y)
+            else:
+                self.x2 = calcularCuadricula(evento.x)
+                self.y2 = calcularCuadricula(evento.y)
+                self.canvas.create_line(self.x1, self.y1, self.x2, self.y2, width=5)
+                print("Se relaciona "+str(self.x1// self.size)+","+str(self.y1// self.size)+" con "+str(self.x2// self.size)+","+str(self.y2// self.size))
+                self.dibujado_linea = True
+                self.dibujando = False
 
+    def line_exit(self):
+        self.canvas.bind("<Button-1>", hola())
 
 Ventana_Principal(ventana)
 ventana.mainloop()
