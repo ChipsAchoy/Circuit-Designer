@@ -6,7 +6,7 @@ from circuit_designer import *
 from ordering_algorithms import *
 
 
-#from tools import calcularCuadricula
+from tools import calcularCuadricula
 
 global listaCable
 global listaNodos
@@ -82,6 +82,7 @@ class Ventana_Principal:
         self.canvas.place(x=0, y=0)
         self.position = [0,0]
         self.const = 50
+        self.size = 50
         self.paint()
         self.canvas.bind("<Button-1>", self.key_pressed)
         
