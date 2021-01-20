@@ -2,6 +2,7 @@ import tkinter, os
 from tkinter import *
 
 
+
 def load_img(name):
     if isinstance(name, str):
         path = os.path.join("imgs", name)
@@ -9,7 +10,6 @@ def load_img(name):
         return img
     else:
         print("Error")
-
 
 
 class Node:

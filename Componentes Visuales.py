@@ -6,17 +6,26 @@ from circuit_designer import *
 from ordering_algorithms import *
 
 
-from tools import calcularCuadricula
+#from tools import calcularCuadricula
 
 global listaCable
 global listaNodos
 global listaResistencias
 global listaFDP
+
+placeNodo = False
 listaCable = []
 listaNodos = []
 listaResistencias = []
 listaFDP = []
 
+def load_img(name):
+    if isinstance(name, str):
+        path = os.path.join("imgs", name)
+        img = PhotoImage(file=path)
+        return img
+    else:
+        print("Error")
 
 def drag_start(event):
     widget = event.widget
@@ -32,8 +41,9 @@ def drag_motion(event):
     widget.place(x=x, y=y)
 
 
-def hola():
-    print("Se clickeo el boton")
+def nuevoNodo():
+    global placeNodo
+    placeNodo = True
 
 
 # Esta funcion pregunta por el nombre de la resistencia y el voltaje luego los almacena en una lista
@@ -41,9 +51,9 @@ def nuevaResistencia():
     nuevoNombre = simpledialog.askstring("Nueva Resistencia", "Ingrese el nombre de la nueva resistencia")
     nuevoVoltaje = simpledialog.askinteger("Nuevo Voltaje", "Ingrese el valor del voltaje")
     if nuevoNombre == '' or nuevoVoltaje == '' or nuevoNombre == None or nuevoVoltaje == None:
-        messagebox.showerror("HUBO UN ERROR", "El nombre o el voltaje no se ingreso")
+        messagebox.showerror("Error", "El nombre o el voltaje no se ingreso")
     elif nuevoNombre in listaResistencias:
-        messagebox.showerror("HUBO UN ERROR", "Este nombre ya existe por favor ingrese otro")
+        messagebox.showerror("Error", "Este nombre ya existe por favor ingrese otro")
     else:
         listaResistencias.append((nuevoNombre, nuevoVoltaje))
         print(listaResistencias)
@@ -54,9 +64,9 @@ def nuevaFDP():
     nuevoNombre = simpledialog.askstring("Nueva Fuente de poder", "Ingrese el nombre de la nueva fuente de poder")
     nuevoVoltaje = simpledialog.askinteger("Nuevo Voltaje", "Ingrese el valor del voltaje")
     if nuevoNombre == '' or nuevoVoltaje == '' or nuevoNombre == None or nuevoVoltaje == None:
-        messagebox.showerror("HUBO UN ERROR", "El nombre o el voltaje no se ingreso")
+        messagebox.showerror("Error", "El nombre o el voltaje no se ingreso")
     elif nuevoNombre in listaFDP:
-        messagebox.showerror("HUBO UN ERROR", "Este nombre ya existe por favor ingrese otro")
+        messagebox.showerror("Error", "Este nombre ya existe por favor ingrese otro")
     else:
         listaFDP.append((nuevoNombre, nuevoVoltaje))
         print(listaFDP)
@@ -74,37 +84,38 @@ class Ventana_Principal:
         self.const = 50
         self.paint()
         self.canvas.bind("<Button-1>", self.key_pressed)
-
+        
         self.dibujado_linea = True
         self.dibujando = True
-
-
 
         self.canvas.bind("<Button-1>", self.key_pressed)
 
         # TituloC hace referencia al Cable
-        tituloR = tkinter.Label(ventana, text="Cable", bg="grey", font="Times 20 bold")
+        tituloR = tkinter.Label(ventana, text="Cable", bg="#525252", fg="white", font="Bahnschrift 20 bold")
         tituloR.place(x=910, y=25)
-
-        botonR = tkinter.Button(ventana, text="AGREGAR", padx=10, pady=5, command=self.line)
+        
+        botonR = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=self.line, bg="#2F2F2F", fg="#D1E10C", font="Bahnschrift 14 bold")
         botonR.place(x=910, y=75)
 
         # TituloN hace referencia al Nodo
-        tituloR = tkinter.Label(ventana, text="Nodo", bg="grey", font="Times 20 bold")
+        tituloR = tkinter.Label(ventana, text="Nodo", bg="#525252", fg="white", font="Bahnschrift 20 bold")
         tituloR.place(x=910, y=125)
-        botonR = tkinter.Button(ventana, text="AGREGAR", padx=10, pady=5, command=hola)
+        botonR = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=nuevoNodo, bg="#2F2F2F", fg="#D1E10C", font="Bahnschrift 14 bold")
         botonR.place(x=910, y=175)
 
         # TituloR hace referencia a la Resistencia
-        tituloR = tkinter.Label(ventana, text="Resistencia", bg="grey", font="Times 20 bold")
+        tituloR = tkinter.Label(ventana, text="Resistencia", bg="#525252", fg="white", font="Bahnschrift 20 bold")
         tituloR.place(x=910, y=225)
-        botonR = tkinter.Button(ventana, text="AGREGAR", padx=10, pady=5, command=nuevaResistencia)
+        botonR = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=nuevaResistencia, bg="#2F2F2F", fg="#D1E10C", font="Bahnschrift 14 bold")
         botonR.place(x=910, y=275)
 
         # TituloFP hace referencia a la Fuente de poder
-        tituloFP = tkinter.Label(ventana, text="Fuente de poder", bg="grey", font="Times 20 bold")
+        tituloFP = tkinter.Label(ventana, text="Fuente de poder", bg="#525252", fg="white", font="Bahnschrift 20 bold")
         tituloFP.place(x=910, y=325)
-        botonFP = tkinter.Button(ventana, text="AGREGAR", padx=10, pady=5, command=nuevaFDP)
+        botonFP = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=nuevaFDP, bg="#2F2F2F", fg="#D1E10C", font="Bahnschrift 14 bold")
+        botonFP.place(x=910, y=375)
+
+        botonFP = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=nuevaFDP, bg="#2F2F2F", fg="#D1E10C", font="Bahnschrift 14 bold")
         botonFP.place(x=910, y=375)
 
         label = Label(ventana, bg="red", width=10, height=5)
@@ -141,7 +152,7 @@ class Ventana_Principal:
         diffs_x = [abs(x-up_limit[0]), abs(x-limit[0]), abs(x-down_limit[0])]
         diffs_y = [abs(y-up_limit[1]), abs(y-limit[1]), abs(y-down_limit[1])]
         
-        out = [radixSort(diffs_x)[0], radixSort(diffs_y)[0]]
+        out = [min(diffs_x), min(diffs_y)]
 
         for i in range(3):
             if out[0] == diffs_x[i]:
@@ -165,20 +176,22 @@ class Ventana_Principal:
         return out
     
     def key_pressed(self, event):
+        global placeNodo
         print("hizo click en", event.x, event.y)
-        if event.x <= 900 and event.y <= 600:
+        if event.x <= 900 and event.y <= 600 and placeNodo:
             self.position = self.adjustPosition(event.x, event.y)
-            print(self.position)
+            print("placing at", self.position)
             if self.position != None:
                 self.drawNode()
+            placeNodo = False
             
     def drawNode(self):
         if not graph.checkNode("Node_"+str(self.position[0])+"_"+str(self.position[1])):
             graph.addNode(self.canvas, self.position[0], self.position[1], "Node_"+str(self.position[0])+"_"+str(self.position[1]))
             graph.printGraph()
         else:
-            print("Ya el nodo esta")
-
+            messagebox.showerror("Error", "Ya hay un nodo en esa posición")
+            
     def line(self):
         self.dibujando = True
         self.canvas.bind("<Button-1>", self.line_aux)
@@ -200,15 +213,12 @@ class Ventana_Principal:
     def line_exit(self):
         self.canvas.bind("<Button-1>", hola())
 
-
-
-
 # Caracteristicas de la ventana
 ventana = Tk()
 ventana.title("Circuit Designer")
 ventana.geometry("1200x700")
 ventana.resizable(False, False)
-ventana.configure(background="grey")
+ventana.configure(background="#525252")
 
 graph = Graph()
 
