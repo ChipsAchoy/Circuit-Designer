@@ -1,3 +1,4 @@
+import os
 import tkinter
 from tkinter import *
 from tkinter import simpledialog
@@ -13,7 +14,7 @@ global listaNodos
 global listaResistencias
 global listaFDP
 
-placeNodo = False
+#placeNodo = False
 listaCable = []
 listaNodos = []
 listaResistencias = []
@@ -41,9 +42,9 @@ def drag_motion(event):
     widget.place(x=x, y=y)
 
 
-def nuevoNodo():
-    global placeNodo
-    placeNodo = True
+#def nuevoNodo():
+#    global placeNodo
+#   placeNodo = True
 
 
 # Esta funcion pregunta por el nombre de la resistencia y el voltaje luego los almacena en una lista
@@ -89,7 +90,9 @@ class Ventana_Principal:
         self.dibujado_linea = True
         self.dibujando = True
 
-        self.canvas.bind("<Button-1>", self.key_pressed)
+        self.placeNodo = False
+
+      #  self.canvas.bind("<Button-1>", self.key_pressed)
 
         # TituloC hace referencia al Cable
         tituloR = tkinter.Label(ventana, text="Cable", bg="#525252", fg="white", font="Bahnschrift 20 bold")
@@ -101,7 +104,7 @@ class Ventana_Principal:
         # TituloN hace referencia al Nodo
         tituloR = tkinter.Label(ventana, text="Nodo", bg="#525252", fg="white", font="Bahnschrift 20 bold")
         tituloR.place(x=910, y=125)
-        botonR = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=nuevoNodo, bg="#2F2F2F", fg="#D1E10C", font="Bahnschrift 14 bold")
+        botonR = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=self.nuevo_Nodo, bg="#2F2F2F", fg="#D1E10C", font="Bahnschrift 14 bold")
         botonR.place(x=910, y=175)
 
         # TituloR hace referencia a la Resistencia
@@ -175,11 +178,16 @@ class Ventana_Principal:
         out = [out[0]/50, out[1]/50]
         print("out",out)
         return out
-    
-    def key_pressed(self, event):
+
+    def nuevo_Nodo(self):
+        self.placeNodo = True
+        self.canvas.bind("<Button-1>", self.key_pressed)
+
+
+    def key_pressed(self,event):
         global placeNodo
         print("hizo click en", event.x, event.y)
-        if event.x <= 900 and event.y <= 600 and placeNodo:
+        if event.x <= 900 and event.y <= 600 and self.placeNodo:
             self.position = self.adjustPosition(event.x, event.y)
             print("placing at", self.position)
             if self.position != None:
@@ -210,9 +218,6 @@ class Ventana_Principal:
                 print("Se relaciona "+str(self.x1// self.size)+","+str(self.y1// self.size)+" con "+str(self.x2// self.size)+","+str(self.y2// self.size))
                 self.dibujado_linea = True
                 self.dibujando = False
-
-    def line_exit(self):
-        self.canvas.bind("<Button-1>", hola())
 
 # Caracteristicas de la ventana
 ventana = Tk()
