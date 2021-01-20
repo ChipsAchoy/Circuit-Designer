@@ -14,12 +14,6 @@ global listaNodos
 global listaResistencias
 global listaFDP
 
-#placeNodo = False
-listaCable = []
-listaNodos = []
-listaResistencias = []
-listaFDP = []
-
 def load_img(name):
     if isinstance(name, str):
         path = os.path.join("imgs", name)
@@ -27,6 +21,14 @@ def load_img(name):
         return img
     else:
         print("Error")
+
+#placeNodo = False
+listaCable = []
+listaNodos = []
+listaResistencias = []
+listaFDP = []
+simulation = False
+
 
 def drag_start(event):
     widget = event.widget
@@ -75,8 +77,8 @@ def nuevaFDP():
 
 class Ventana_Principal:
 
-    def __init__(self, master, graph):
-
+    def __init__(self, master, graph, images):
+        self.images = images
         self.master = master
         self.graph = graph
         self.canvas = Canvas(self.master, width = 901, height = 601, highlightthickness = 0, relief = "ridge")
@@ -86,14 +88,15 @@ class Ventana_Principal:
         self.size = 50
         self.paint()
         self.canvas.bind("<Button-1>", self.key_pressed)
+
         
         self.dibujado_linea = True
         self.dibujando = True
-
         self.placeNodo = False
-
-      #  self.canvas.bind("<Button-1>", self.key_pressed)
-
+        self.dijAs = False
+        
+        #self.canvas.bind("<Button-1>", self.key_pressed)
+        
         # TituloC hace referencia al Cable
         tituloR = tkinter.Label(ventana, text="Cable", bg="#525252", fg="white", font="Bahnschrift 20 bold")
         tituloR.place(x=910, y=25)
@@ -122,17 +125,67 @@ class Ventana_Principal:
         botonFP = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=nuevaFDP, bg="#2F2F2F", fg="#D1E10C", font="Bahnschrift 14 bold")
         botonFP.place(x=910, y=375)
 
+        self.botonPlay = tkinter.Button(ventana, padx=10, pady=5, command=self.startSimulation, bg="#2F2F2F", image=images[0])
+        self.botonPlay.place(x=70, y=630)
+
+        self.botonSelec = tkinter.Button(ventana, padx=10, pady=5, command=self.changeMode, bg="#2F2F2F", image=images[2])
+        self.botonSelec.place(x=370, y=630)
+
+        tituloPlay = tkinter.Label(ventana, text="Simular", bg="#525252", fg="white", font="Bahnschrift 16 bold")
+        tituloPlay.place(x=60, y=600)
+        
+        tituloDij = tkinter.Label(ventana, text="Modo de búsqueda", bg="#525252", fg="white", font="Bahnschrift 16 bold")
+        tituloDij.place(x=300, y=600)
+
+        titulom = tkinter.Label(ventana, text="Menor", bg="#525252", fg="white", font="Bahnschrift 16 bold")
+        titulom.place(x=290, y=640)
+
+        tituloM = tkinter.Label(ventana, text="Mayor", bg="#525252", fg="white", font="Bahnschrift 16 bold")
+        tituloM.place(x=430, y=640)
+
+        tituloT = tkinter.Label(ventana, text="Terminales", bg="#525252", fg="white", font="Bahnschrift 16 bold")
+        tituloT.place(x=720, y=600)
+        
         label = Label(ventana, bg="red", width=10, height=5)
         label.place(x=1110, y=25)
 
         label2 = Label(ventana, bg="blue", width=10, height=5)
         label2.place(x=1110, y=125)
+        
+        label3 = Label(ventana, image=images[4], width=43, height=43)
+        label3.place(x=700, y=630)
 
+        label4 = Label(ventana, image=images[5], width=43, height=43)
+        label4.place(x=800, y=630)
+        
         label.bind("<Button-1>", drag_start)
         label.bind("<B1-Motion>", drag_motion)
 
         label2.bind("<Button-1>", drag_start)
         label2.bind("<B1-Motion>", drag_motion)
+
+        label3.bind("<Button-1>", drag_start)
+        label3.bind("<B1-Motion>", drag_motion)
+
+        label4.bind("<Button-1>", drag_start)
+        label4.bind("<B1-Motion>", drag_motion)
+
+
+    def changeMode(self):
+        self.dijAs = not self.dijAs
+        print(self.dijAs)
+        if not self.dijAs:
+            self.botonSelec.configure(image=self.images[2])
+        else:
+            self.botonSelec.configure(image=self.images[3])
+
+    def startSimulation(self):
+        global simulation
+        simulation = not simulation
+        if not simulation:
+            self.botonPlay.configure(image=self.images[0])
+        else:
+            self.botonPlay.configure(image=self.images[1])
 
     def paint(self):
         return self.paint_aux(0,0)
@@ -225,8 +278,12 @@ ventana.title("Circuit Designer")
 ventana.geometry("1200x700")
 ventana.resizable(False, False)
 ventana.configure(background="#525252")
-
 graph = Graph()
-
-vent = Ventana_Principal(ventana, graph)
+pause_i = load_img("play.png")
+play_i = load_img("paused.png")
+select_r = load_img("selec_r.png")
+select_l = load_img("selec_l.png")
+initial = load_img("init.png")
+final = load_img("final.png")
+vent = Ventana_Principal(ventana, graph, [play_i, pause_i, select_l, select_r, initial, final])
 ventana.mainloop()
