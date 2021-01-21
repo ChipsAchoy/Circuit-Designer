@@ -20,3 +20,8 @@ def calcularCuadricula_aux(temp1, temp2):
         return temp2
     else:
         return calcularCuadricula_aux(temp1 - 1, temp2 + 1)
+
+
+def generateSave(graph, filename):
+    print(graph)
+    

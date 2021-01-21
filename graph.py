@@ -362,29 +362,4 @@ class Graph:
         print(output)
 
 
-# Funcion main del programa
-def main():
-    # print(radixSort([170, 45, 75, 90, 802, 24, 2, 66]))
-    print("x", shellSort([170, 45, 75, 90, 802, 24, 2, 66]))
 
-    graph = Graph()
-    graph.addNode("A")
-    graph.addNode("B")
-    graph.addNode("C")
-    graph.addNode("D")
-    # graph.addNode("E")
-    graph.addArc("A", "B", "resistor", "R1", 40)
-    graph.addArc("B", "C", "resistor", "R2", 10)
-    graph.addArc("B", "C", "resistor", "R3", 20)
-    graph.addArc("B", "C", "resistor", "R4", 30)
-    graph.addArc("C", "D", "resistor", "R5", 50)
-    graph.printGraph()
-    graph.dijkstra("B", "D", False)
-
-    # print(graph.getRes())
-    # print(graph.getDictRes())
-    # searchNameRes(graph.getDictRes(),slist)
-    print(shellSort(["Aablo", "Juan", "Isai", "Antony"]))
-
-
-#main()

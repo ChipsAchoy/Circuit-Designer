@@ -3,7 +3,7 @@ import tkinter
 from tkinter import *
 from tkinter import simpledialog
 from tkinter import messagebox
-from circuit_designer import *
+from graph import *
 from ordering_algorithms import *
 
 
@@ -228,28 +228,31 @@ class Ventana_Principal:
                 elif i == 2:
                     out[1] = down_limit[1]
             
-        out = [out[0]/50, out[1]/50]
+        out = [int(out[0]/50), int(out[1]/50)]
         print("out",out)
         return out
 
     def nuevo_Nodo(self):
-        self.placeNodo = True
+        global placeNodo
+        placeNodo = True
         self.canvas.bind("<Button-1>", self.key_pressed)
 
 
     def key_pressed(self,event):
         global placeNodo
         print("hizo click en", event.x, event.y)
-        if event.x <= 900 and event.y <= 600 and self.placeNodo:
+        if event.x <= 900 and event.y <= 600 and placeNodo:
             self.position = self.adjustPosition(event.x, event.y)
             print("placing at", self.position)
             if self.position != None:
                 self.drawNode()
-            placeNodo = False
+        placeNodo = False
             
     def drawNode(self):
         if not graph.checkNode("Node_"+str(self.position[0])+"_"+str(self.position[1])):
             graph.addNode(self.canvas, self.position[0], self.position[1], "Node_"+str(self.position[0])+"_"+str(self.position[1]))
+            tituloNodo = tkinter.Label(ventana, text="Node_"+str(self.position[0])+"_"+str(self.position[1]), bg="white" ,fg="black", font="Bahnschrift 8 bold")
+            tituloNodo.place(x=self.position[0]*50-40, y=self.position[1]*50-30)
             graph.printGraph()
         else:
             messagebox.showerror("Error", "Ya hay un nodo en esa posición")
