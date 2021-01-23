@@ -138,9 +138,9 @@ class Ventana_Principal:
                                  font="Bahnschrift 14 bold")
         botonFP.place(x=910, y=375)
 
-    #    botonFP = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=nuevaFDP, bg="#2F2F2F", fg="#D1E10C",
-      #                           font="Bahnschrift 14 bold")
-       # botonFP.place(x=910, y=375)
+        botonSave = tkinter.Button(ventana, text="Guardar", padx=10, pady=5, command=self.save, bg="#2F2F2F", fg="#82E0FE",
+                                 font="Bahnschrift 14 bold")
+        botonSave.place(x=910, y=475)
 
         self.botonPlay = tkinter.Button(ventana, padx=10, pady=5, command=self.startSimulation, bg="#2F2F2F",
                                         image=images[0])
@@ -165,7 +165,7 @@ class Ventana_Principal:
 
         tituloT = tkinter.Label(ventana, text="Terminales", bg="#525252", fg="white", font="Bahnschrift 16 bold")
         tituloT.place(x=720, y=600)
-
+        
         label = Label(ventana, bg="red", width=10, height=5)
         label.place(x=1110, y=25)
 
@@ -191,6 +191,11 @@ class Ventana_Principal:
         label4.bind("<Button-1>", drag_start)
         label4.bind("<B1-Motion>", drag_motion)
 
+    def save(self):
+        filename = simpledialog.askstring("Nombre del archivo", "Ingrese el nombre del archivo de guardado")
+        generateSave(graph, filename)
+        messagebox.showinfo("Información", "Se ha guardado el circuito")
+    
     def changeMode(self):
         self.dijAs = not self.dijAs
         print(self.dijAs)
