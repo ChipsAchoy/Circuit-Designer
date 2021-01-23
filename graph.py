@@ -2,6 +2,12 @@
     Tercer Proyecto Estructuras de Datos I
 '''
 from ordering_algorithms import *
+import tkinter
+from tkinter import *
+from tkinter import simpledialog
+from tkinter import messagebox
+from tools import generateSave
+import random, time
 
 '''
 Clase Node: Nodo utilizado en el grafo
@@ -38,27 +44,14 @@ Clase Node: Nodo utilizado en el grafo
 class Node:
 
     def __init__(self, master, x, y, ident):
+        self.master = master
         self.id = ident
-        self.volt = 0
-        self.current = 0
         self.position = [x,y]
         self.master = master
         self.x = x*50-5
         self.y = y*50-5
         self.radius = 10
         self.master.create_oval(self.x, self.y, self.x+self.radius, self.y+self.radius, fill="blue")
-
-    def setVolt(self, volt):
-        self.volt = volt
-
-    def setCurrent(self, cur):
-        self.current = cur
-
-    def getVolt(self):
-        return self.volt
-
-    def getCurrent(self):
-        return self.current
 
     def getId(self):
         return self.id
@@ -83,30 +76,37 @@ Clase Arc: Arcos utilizados en el grafo, pueden representar tanto una resistenci
         R: -
 '''
 
-
 class Arc:
-
-    def __init__(self, component, name, value=0):
+    
+    def __init__(self, master, component, name, value, d1, d2):
+        self.master = master
+        self.d1 = d1
+        self.d2 = d2
         self.value = value
         self.component = component
         self.name = name
-
         self.ohms = 0
         self.volts = 0
+        self.current = 0
         if component == "resistor":
             self.ohms = value
+            self.volts = round(random.uniform(0, 10), 2)
         elif component == "source":
+            self.ohms = 0
             self.volts = value
+        self.current = round(random.uniform(0, 1000), 2)
+
+    def getCurrent(self):
+        return self.current
 
     def getValue(self):
-        return self.value
+        return self.volts
 
     def getName(self):
         return self.name
 
     def getComponet(self):
         return self.component
-
 
 '''
 Clase Grafo: Implementacion del grafo por medio de una matriz de adyacencia y una lista que contiene la referencia a los nodos
@@ -188,8 +188,8 @@ class Graph:
                     tmp[i][j] = trans[i][j]
             self.adMatrix = tmp
 
-    def addArc(self, id1, id2, component, name, value=0):
-        arc = Arc(component, name, value)
+    def addArc(self, master, id1, id2, component, name, value, d1, d2):
+        arc = Arc(master, component, name, value, d1, d2)
         if self.checkNode(id1) and self.checkNode(id2):
             index1 = self.nodes.index(self.getById(id1))
             index2 = self.nodes.index(self.getById(id2))
@@ -197,6 +197,7 @@ class Graph:
                 self.adMatrix[index1][index2] += [arc]
             else:
                 self.adMatrix[index1][index2] = [arc]
+                
             print("Se ha creado arco entre "+id1+" y "+id2)
         else:
             print("No se puede crear una relación")
@@ -364,8 +365,4 @@ class Graph:
                 break
         for i in arcs:
             print(i.getName())
-
         print(output)
-
-
-
