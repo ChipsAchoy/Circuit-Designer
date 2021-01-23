@@ -6,7 +6,7 @@ from tkinter import messagebox
 from graph import *
 from ordering_algorithms import *
 
-from tools import calcularCuadricula
+from tools import *
 
 global listaCable
 global listaNodos
@@ -271,8 +271,7 @@ class Ventana_Principal:
         self.placeNodo = False
 
     def drawNode(self):
-        if not graph.checkNode("Node_"+str(self.position[0])+"_"+str(self.position[1])):
-            ''' 
+        ''' 
             graph.addNode(self.canvas, 1,1, "Node_1_1")
             graph.addNode(self.canvas,1,2, "Node_1_2")
             graph.addNode(self.canvas,3,1, "Node_3_1")
@@ -281,16 +280,17 @@ class Ventana_Principal:
             graph.addArc(self.canvas,"Node_1_1","Node_3_1", "resistor", "Resistencia_1", 646,[1,5], [7,2])
             graph.addArc(self.canvas, "Node_1_4","Node_1_2", "resistor", "Resistencia_1", 879,[6,8], [7,4])
             generateSave(graph, "prueba")
-            '''
+        '''
         if not graph.checkNode("Node_" + str(self.position[0]) + "_" + str(self.position[1])):
-            graph.addNode(self.canvas, self.position[0], self.position[1],
-                          "Node_" + str(self.position[0]) + "_" + str(self.position[1]))
+            graph.addNode(self.canvas, self.position[0], self.position[1],"Node_" + str(self.position[0]) + "_" + str(self.position[1]))
             tituloNodo = tkinter.Label(ventana, text="Node_" + str(self.position[0]) + "_" + str(self.position[1]), bg="white", fg="black", font="Bahnschrift 8 bold")
             tituloNodo.place(x=self.position[0] * 50 - 40, y=self.position[1] * 50 - 30)
             graph.printGraph()
+            #loadSave(graph, "prueba")
             
         else:
             messagebox.showerror("Error", "Ya hay un nodo en esa posición")
+        
 
     def genCable(self):
         self.line("Cable")
@@ -326,11 +326,11 @@ class Ventana_Principal:
 
     def addLine(self, x1, y1, x2, y2,type):
         if type == "resistor" or type == "source":
-            graph.addArc(self.genID("Node",x1,y1),self.genID("Node",x2,y2),self.compType,self.compName
-                         , self.compValue)
+            graph.addArc(self.master ,self.genID("Node",x1,y1),self.genID("Node",x2,y2),self.compType,self.compName
+                         , self.compValue, [x1, y1], [x2, y2])
         else:
-            graph.addArc(self.genID("Node",x1,y1),self.genID("Node",x2,y2),"Cable",
-                         "Cable_"+str(x1)+"_"+str(y1)+"-"+str(x2)+"_"+str(y2))
+            graph.addArc(self.master, self.genID("Node",x1,y1),self.genID("Node",x2,y2),"Cable",
+                         "Cable_"+str(x1)+"_"+str(y1)+"-"+str(x2)+"_"+str(y2), [x1, y1], [x2, y2])
 
         graph.printGraph()
 
