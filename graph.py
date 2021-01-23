@@ -51,7 +51,7 @@ class Node:
         self.x = x*50-5
         self.y = y*50-5
         self.radius = 10
-        self.master.create_oval(self.x, self.y, self.x+self.radius, self.y+self.radius, fill="black")
+        self.master.create_oval(self.x, self.y, self.x+self.radius, self.y+self.radius, fill="blue")
 
     def getId(self):
         return self.id
@@ -104,6 +104,9 @@ class Arc:
 
     def getName(self):
         return self.name
+
+    def getComponet(self):
+        return self.component
 
 '''
 Clase Grafo: Implementacion del grafo por medio de una matriz de adyacencia y una lista que contiene la referencia a los nodos
@@ -194,7 +197,10 @@ class Graph:
                 self.adMatrix[index1][index2] += [arc]
             else:
                 self.adMatrix[index1][index2] = [arc]
-            
+                
+            print("Se ha creado arco entre "+id1+" y "+id2)
+        else:
+            print("No se puede crear una relación")
 
     def deleteNode(self, ident):  # Elimina los arcos asociados a ese nodo tanto de ida como de vuleta
         if self.checkNode(ident):
