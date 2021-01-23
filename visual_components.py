@@ -51,6 +51,7 @@ def drag_motion(event):
 
 
 # Esta funcion pregunta por el nombre de la resistencia y el voltaje luego los almacena en una lista
+"""
 def nuevaResistencia():
     nuevoNombre = simpledialog.askstring("Nueva Resistencia", "Ingrese el nombre de la nueva resistencia")
     nuevoVoltaje = simpledialog.askinteger("Nuevo Voltaje", "Ingrese el valor del voltaje")
@@ -74,7 +75,7 @@ def nuevaFDP():
     else:
         listaFDP.append((nuevoNombre, nuevoVoltaje))
         print(listaFDP)
-
+"""
 
 class Ventana_Principal:
 
@@ -90,15 +91,21 @@ class Ventana_Principal:
         self.paint()
         self.canvas.bind("<Button-1>", self.key_pressed)
 
+        self.compType = None
+
         self.dibujado_linea = True
         self.dibujando = True
         self.placeNodo = False
         self.dijAs = False
 
+        self.compName = ""
+        self.compValue = 0
+
         #self.genID = lambda type, x, y: type+"_"+str(x)+"_"+str(y)
         self.genID = lambda type, x, y: type+"_"+str(calcularCuadricula(x)//self.size)+\
                                                "_"+str(calcularCuadricula(y)//self.size)
 
+        self.genColor = lambda type: "black" if type == "Cable" else "red" if type == "resistor" else "yellow"
 
         # self.canvas.bind("<Button-1>", self.key_pressed)
 
@@ -106,7 +113,7 @@ class Ventana_Principal:
         tituloR = tkinter.Label(ventana, text="Cable", bg="#525252", fg="white", font="Bahnschrift 20 bold")
         tituloR.place(x=910, y=25)
 
-        botonR = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=self.line, bg="#2F2F2F", fg="#D1E10C",
+        botonR = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=self.genCable, bg="#2F2F2F", fg="#D1E10C",
                                 font="Bahnschrift 14 bold")
         botonR.place(x=910, y=75)
 
@@ -120,20 +127,20 @@ class Ventana_Principal:
         # TituloR hace referencia a la Resistencia
         tituloR = tkinter.Label(ventana, text="Resistencia", bg="#525252", fg="white", font="Bahnschrift 20 bold")
         tituloR.place(x=910, y=225)
-        botonR = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=nuevaResistencia, bg="#2F2F2F",
+        botonR = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=self.nuevaResistencia, bg="#2F2F2F",
                                 fg="#D1E10C", font="Bahnschrift 14 bold")
         botonR.place(x=910, y=275)
 
         # TituloFP hace referencia a la Fuente de poder
         tituloFP = tkinter.Label(ventana, text="Fuente de poder", bg="#525252", fg="white", font="Bahnschrift 20 bold")
         tituloFP.place(x=910, y=325)
-        botonFP = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=nuevaFDP, bg="#2F2F2F", fg="#D1E10C",
+        botonFP = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=self.nuevaFDP, bg="#2F2F2F", fg="#D1E10C",
                                  font="Bahnschrift 14 bold")
         botonFP.place(x=910, y=375)
 
-        botonFP = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=nuevaFDP, bg="#2F2F2F", fg="#D1E10C",
-                                 font="Bahnschrift 14 bold")
-        botonFP.place(x=910, y=375)
+    #    botonFP = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=nuevaFDP, bg="#2F2F2F", fg="#D1E10C",
+      #                           font="Bahnschrift 14 bold")
+       # botonFP.place(x=910, y=375)
 
         self.botonPlay = tkinter.Button(ventana, padx=10, pady=5, command=self.startSimulation, bg="#2F2F2F",
                                         image=images[0])
@@ -194,6 +201,8 @@ class Ventana_Principal:
 
     def startSimulation(self):
         global simulation
+        print("------------------------------------------------------------------------")
+        graph.printGraph()
         simulation = not simulation
         if not simulation:
             self.botonPlay.configure(image=self.images[0])
@@ -271,8 +280,16 @@ class Ventana_Principal:
         else:
             messagebox.showerror("Error", "Ya hay un nodo en esa posición")
 
-    def line(self):
+    def genCable(self):
+        self.line("Cable")
+
+    def line(self,type,name="",value=0):
+        print("SOPUTAMASRE")
         self.dibujando = True
+        self.compType = type
+        self.compName = name
+        self.compValue = value
+        print("Agregando: "+self.compType)
         self.canvas.bind("<Button-1>", self.line_aux)
 
     def line_aux(self, evento):
@@ -285,23 +302,27 @@ class Ventana_Principal:
                 else:
                     self.x2 = calcularCuadricula(evento.x)
                     self.y2 = calcularCuadricula(evento.y)
-                    self.canvas.create_line(self.x1, self.y1, self.x2, self.y2, width=5)
-                    print("Se relaciona " + str(self.x1 // self.size) + "," + str(self.y1 // self.size) + " con " + str(
-                        self.x2 // self.size) + "," + str(self.y2 // self.size))
+                    self.canvas.create_line(self.x1, self.y1, self.x2, self.y2, width=5, fill = self.genColor(self.compType))
+                    print("Se relaciona: " + self.genID("Node",self.x1,self.y1) + " con " + self.genID("Node",self.x2,self.y2))
                     self.dibujado_linea = True
                     self.dibujando = False
-                    self.addCable(self.x1,self.y1,self.x2,self.y2)
+                    self.addLine(self.x1,self.y1,self.x2,self.y2,self.compType)
             else:
                 self.dibujando = False
                 self.dibujado_linea = True
                 print("No hay nodo en "+self.genID("Node",evento.x,evento.y))
 
-    def addCable(self, x1, y1, x2, y2):
-     #   graph.addArc("Node_"+str(x1)+"_"+str(y1),"Node_"+str(x2)+"_"
-      #               +str(y2),"cable","Cable_"+str(x1)+"_"+str(y1)+"-"+str(x2)+"_"+str(y2))
-        graph.addArc(self.genID("Node",x1,y1),self.genID("Node",x2,y2),"Cable",
-                     "Cable_"+str(x1)+"_"+str(y1)+"-"+str(x2)+"_"+str(y2))
+    def addLine(self, x1, y1, x2, y2,type):
+        if type == "resistor" or type == "source":
+            graph.addArc(self.genID("Node",x1,y1),self.genID("Node",x2,y2),self.compType,self.compName
+                         , self.compValue)
+        else:
+            graph.addArc(self.genID("Node",x1,y1),self.genID("Node",x2,y2),"Cable",
+                         "Cable_"+str(x1)+"_"+str(y1)+"-"+str(x2)+"_"+str(y2))
 
+        graph.printGraph()
+
+    # Esta funcion pregunta por el nombre de la resistencia y el voltaje luego los almacena en una lista
     def nuevaResistencia(self):
         nuevoNombre = simpledialog.askstring("Nueva Resistencia", "Ingrese el nombre de la nueva resistencia")
         nuevoVoltaje = simpledialog.askinteger("Nuevo Voltaje", "Ingrese el valor del voltaje")
@@ -312,8 +333,20 @@ class Ventana_Principal:
         else:
             listaResistencias.append((nuevoNombre, nuevoVoltaje))
             print(listaResistencias)
+            self.line("resistor",nuevoNombre,nuevoVoltaje)
 
-
+    # Esta funcion pregunta por el nombre de la Fuente de poder y el voltaje luego los almacena en una lista
+    def nuevaFDP(self):
+        print("Agredando source")
+        nuevoNombre = simpledialog.askstring("Nueva Fuente de poder", "Ingrese el nombre de la nueva fuente de poder")
+        nuevoVoltaje = simpledialog.askinteger("Nuevo Voltaje", "Ingrese el valor del voltaje")
+        if nuevoNombre == '' or nuevoVoltaje == '' or nuevoNombre == None or nuevoVoltaje == None:
+            messagebox.showerror("Error", "El nombre o el voltaje no se ingreso")
+        elif nuevoNombre in listaFDP:
+            messagebox.showerror("Error", "Este nombre ya existe por favor ingrese otro")
+        else:
+            listaFDP.append((nuevoNombre, nuevoVoltaje))
+            self.line("source",nuevoNombre,nuevoVoltaje)
 
 
 

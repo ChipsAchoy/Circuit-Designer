@@ -197,7 +197,7 @@ class Graph:
                 self.adMatrix[index1][index2] += [arc]
             else:
                 self.adMatrix[index1][index2] = [arc]
-            print("Se ha creado arco entre"+id1+" y "+id2)
+            print("Se ha creado arco entre "+id1+" y "+id2)
         else:
             print("No se puede crear una relación")
 

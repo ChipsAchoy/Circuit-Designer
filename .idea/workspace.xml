@@ -13,7 +13,6 @@
     <list default="true" id="3314e97c-7044-4b42-9432-008802b512a9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graph.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/init.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/init.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visual_components.py" beforeDir="false" afterPath="$PROJECT_DIR$/visual_components.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -194,7 +193,8 @@
       <workItem from="1610946053761" duration="109000" />
       <workItem from="1610947678463" duration="1176000" />
       <workItem from="1611034916413" duration="7129000" />
-      <workItem from="1611261740937" duration="13479000" />
+      <workItem from="1611261740937" duration="13646000" />
+      <workItem from="1611343323562" duration="8058000" />
     </task>
     <task id="LOCAL-00001" summary="Se agrega el git ignore xd">
       <created>1610166646035</created>
@@ -224,7 +224,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611122112844</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Cable solo se pone cuando hay algo en que ponerlo y también añade el arco del grafo">
+      <created>1611308177169</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1611308177169</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,12 +264,13 @@
     <MESSAGE value="Se agrega el git ignore xd" />
     <MESSAGE value="Se ordenan archivos" />
     <MESSAGE value="Se arregla bug con nodos y cables" />
-    <option name="LAST_COMMIT_MESSAGE" value="Se arregla bug con nodos y cables" />
+    <MESSAGE value="Cable solo se pone cuando hay algo en que ponerlo y también añade el arco del grafo" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cable solo se pone cuando hay algo en que ponerlo y también añade el arco del grafo" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Circuit_Designer$Matriz_nodo.coverage" NAME="Matriz nodo Coverage Results" MODIFIED="1610947690507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Circuit_Designer$circuit_designer.coverage" NAME="circuit_designer Coverage Results" MODIFIED="1610753270412" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Circuit_Designer$visual_components.coverage" NAME="visual_components Coverage Results" MODIFIED="1611308015837" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Circuit_Designer$visual_components.coverage" NAME="visual_components Coverage Results" MODIFIED="1611362892639" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Circuit_Designer$OrderingAlgorithms.coverage" NAME="OrderingAlgorithms Coverage Results" MODIFIED="1610563179097" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/OrderingAlgorithms" />
     <SUITE FILE_PATH="coverage/Circuit_Designer$Componentes_Visuales.coverage" NAME="Componentes Visuales Coverage Results" MODIFIED="1611275321134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
