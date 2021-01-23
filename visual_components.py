@@ -77,6 +77,31 @@ def nuevaFDP():
         print(listaFDP)
 """
 
+class Ventana_caracteristicas:
+
+    # Caracteristicas principales de todas las ventanas
+    def __init__(self, title="Circuit Designer", geometry="1200x700", resizable=False):
+        self.ventana = Tk()
+        self.ventana.title(title)
+        self.ventana.geometry(geometry)
+        self.ventana.resizable(resizable,resizable)
+        self.ventana.configure(background="#525252")
+
+    def menu_principal(self):
+        boton1 = tkinter.Button(self.ventana, text="VENTANA NUEVA", padx=10, pady=5, command= self.open_ventana_nueva)
+        boton1.place(x=450, y=275)
+        boton2 = tkinter.Button(self.ventana, text="CARGAR VENTANA", padx=10, pady=5, command= self.open_ventana_nueva)
+        boton2.place(x=450, y=375)
+        self.ventana.mainloop()
+
+    def open_ventana_nueva(self):
+        self.ventana.destroy()
+        self.ventana_principal()
+
+    def ventana_principal(self):
+        self.__init__()
+        Ventana_Principal.__init__()
+
 class Ventana_Principal:
 
     def __init__(self, master, graph, images):
