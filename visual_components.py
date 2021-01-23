@@ -78,8 +78,8 @@ def nuevaFDP():
 class Ventana_Principal:
 
     def __init__(self, master, graph, images):
-        self.images = images
         self.master = master
+        self.images = images
         self.graph = graph
         self.canvas = Canvas(self.master, width = 901, height = 601, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x=0, y=0)
@@ -170,7 +170,6 @@ class Ventana_Principal:
         label4.bind("<Button-1>", drag_start)
         label4.bind("<B1-Motion>", drag_motion)
 
-
     def changeMode(self):
         self.dijAs = not self.dijAs
         print(self.dijAs)
@@ -198,7 +197,6 @@ class Ventana_Principal:
 
     def adjustPosition(self, x, y):
         print("xy",x, y)
-        
         up_limit = [0, 0]
         if x//50 != 0 and y//50 != 0:
             up_limit = [((x//50)-1)*50, ((y//50)-1)*50]
@@ -237,8 +235,8 @@ class Ventana_Principal:
         placeNodo = True
         self.canvas.bind("<Button-1>", self.key_pressed)
 
-
     def key_pressed(self,event):
+        
         global placeNodo
         print("hizo click en", event.x, event.y)
         if event.x <= 900 and event.y <= 600 and placeNodo:
@@ -250,10 +248,22 @@ class Ventana_Principal:
             
     def drawNode(self):
         if not graph.checkNode("Node_"+str(self.position[0])+"_"+str(self.position[1])):
+            
+            graph.addNode(self.canvas, 1,1, "Node_1_1")
+            graph.addNode(self.canvas,1,2, "Node_1_2")
+            graph.addNode(self.canvas,3,1, "Node_3_1")
+            graph.addNode(self.canvas,1,4, "Node_1_4")
+            graph.addArc(self.canvas,"Node_1_1","Node_1_2", "resistor", "Resistencia_1", 43634,[1,1], [2,2])
+            graph.addArc(self.canvas,"Node_1_1","Node_3_1", "resistor", "Resistencia_1", 646,[1,5], [7,2])
+            graph.addArc(self.canvas, "Node_1_4","Node_1_2", "resistor", "Resistencia_1", 879,[6,8], [7,4])
+            generateSave(graph, "prueba")
+            '''
             graph.addNode(self.canvas, self.position[0], self.position[1], "Node_"+str(self.position[0])+"_"+str(self.position[1]))
             tituloNodo = tkinter.Label(ventana, text="Node_"+str(self.position[0])+"_"+str(self.position[1]), bg="white" ,fg="black", font="Bahnschrift 8 bold")
             tituloNodo.place(x=self.position[0]*50-40, y=self.position[1]*50-30)
             graph.printGraph()
+            '''
+            
         else:
             messagebox.showerror("Error", "Ya hay un nodo en esa posición")
             
