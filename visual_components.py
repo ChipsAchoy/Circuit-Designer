@@ -56,10 +56,16 @@ class Ventana_Menu:
         self.menu_principal()
         
     def menu_principal(self):
+        canvas1 = Canvas(self.ventana, width = 300, height = 100)
+        canvas1.place(x=525, y=100)
+        img = PhotoImage(file="imgs/logo.png")
+        canvas1.create_image(150,50,image=img)
         self.boton1 = tkinter.Button(self.ventana, text="VENTANA NUEVA", padx=10, pady=5, command= self.open_ventana_nueva)
-        self.boton1.place(x=450, y=275)
+        self.boton1.place(x=600, y=275)
         self.boton2 = tkinter.Button(self.ventana, text="CARGAR VENTANA", padx=10, pady=5, command= self.open_ventana_nueva)
-        self.boton2.place(x=450, y=375)
+        self.boton2.place(x=600, y=375)
+        self.ventana.mainloop()
+        
 
     def open_ventana_nueva(self):
         self.boton1.destroy()
