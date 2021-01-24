@@ -1,0 +1,2 @@
+Nodes:[9,4,Node_9_4][10,8,Node_10_8][6,7,Node_6_7]
+Arcs:[Node_9_4,Node_10_8,resistor,r2,1231,450,200,500,400][Node_6_7,Node_9_4,resistor,r1,12312,300,350,450,200][Node_6_7,Node_10_8,resistor,r3,1231,300,350,500,400]

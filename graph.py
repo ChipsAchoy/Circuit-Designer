@@ -48,10 +48,14 @@ class Node:
         self.id = ident
         self.position = [x,y]
         self.master = master
-        self.x = x*50-5
-        self.y = y*50-5
+        self.x = x
+        self.y = y
+        self.x_pos = x*50-5
+        self.y_pos = y*50-5
         self.radius = 10
-        self.master.create_oval(self.x, self.y, self.x+self.radius, self.y+self.radius, fill="blue")
+        self.master.create_oval(self.x_pos, self.y_pos, self.x_pos+self.radius, self.y_pos+self.radius, fill="blue")
+        tituloNodo = tkinter.Label(self.master, text="Node_" + str(self.position[0]) + "_" + str(self.position[1]), bg="white", fg="black", font="Bahnschrift 8 bold")
+        tituloNodo.place(x=x * 50 - 40, y=y * 50 - 30)
 
     def getId(self):
         return self.id
@@ -169,6 +173,7 @@ class Graph:
                 return i
 
     def addNode(self, master, x, y, ident):
+        print("se ha creado un nodo")
         self.nodesCount += 1
         self.nodes += [Node(master, x, y, ident)]
         if self.nodesCount == 1:

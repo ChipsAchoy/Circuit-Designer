@@ -3,6 +3,7 @@ import tkinter
 from tkinter import *
 from tkinter import simpledialog
 from tkinter import messagebox
+from tkinter import filedialog 
 from graph import *
 
 from ordering_algorithms import insertion_Sort, shell_Sort
@@ -12,6 +13,8 @@ global listaCable
 global listaNodos
 global listaResistencias
 global listaFDP
+
+#https://stackoverflow.com/questions/22925599/mouse-position-python-tkinter
 
 
 def load_img(name):
@@ -56,26 +59,44 @@ class Ventana_Menu:
         self.menu_principal()
         
     def menu_principal(self):
-        canvas1 = Canvas(self.ventana, width = 300, height = 100)
-        canvas1.place(x=525, y=100)
-        img = PhotoImage(file="imgs/logo.png")
-        canvas1.create_image(150,50,image=img)
-        self.boton1 = tkinter.Button(self.ventana, text="VENTANA NUEVA", padx=10, pady=5, command= self.open_ventana_nueva)
-        self.boton1.place(x=600, y=275)
-        self.boton2 = tkinter.Button(self.ventana, text="CARGAR VENTANA", padx=10, pady=5, command= self.open_ventana_nueva)
-        self.boton2.place(x=600, y=375)
-        self.ventana.mainloop()
+        img = load_img("logo.png")
+        self.filename = None
+        self.logo = tkinter.Label(self.ventana, image=img, bg="#525252")
+        self.logo.place(x=450, y=150)
+        self.canvas1 = Canvas(self.ventana, width=400, height=700, highlightthickness=0, relief="ridge", bg="black")
+        self.canvas1.place(x=0, y=0)
         
+        self.canvas2 = Canvas(self.ventana, width=400, height=700, highlightthickness=0, relief="ridge", bg="black")
+        self.canvas2.place(x=1000, y=0)
+        
+        self.boton1 = tkinter.Button(self.ventana, text="Nuevo circuito", bg="#525252", fg="#82E0FE", font="Bahnschrift 20 bold", command=self.open_ventana_nueva)
+        self.boton1.place(x=450, y=500)
+        self.boton2 = tkinter.Button(self.ventana, text="Importar circuito", bg="#525252", fg="#82E0FE", font="Bahnschrift 20 bold", command=self.import_file)
+        self.boton2.place(x=700, y=500)
+        self.ventana.mainloop()
 
     def open_ventana_nueva(self):
+        self.logo.destroy()
         self.boton1.destroy()
         self.boton2.destroy()
-        vent = Ventana_Principal(self.ventana, self.graph, self.images)
+        self.canvas1.destroy()
+        self.canvas2.destroy()
+        vent = Ventana_Principal(self.ventana, self.graph, self.images, self.filename)
+        
+        
+    def import_file(self): 
+        self.filename = filedialog.askopenfilename(initialdir = "C:/Users/INTEL/Documents/GitHub/Circuit-Designer/saves/", title = "Select a File", 
+                                              filetypes = (("Text files", 
+                                                            "*.txt*"), 
+                                                           ("all files", 
+                                                            "*.*")))    
+        print(self.filename)
+        self.open_ventana_nueva()
         
 
 class Ventana_Principal:
 
-    def __init__(self, master, graph, images):
+    def __init__(self, master, graph, images, filename):
         self.master = master
         self.images = images
         self.graph = graph
@@ -84,9 +105,12 @@ class Ventana_Principal:
         self.position = [0, 0]
         self.const = 50
         self.size = 50
+        
+        
+        
         self.paint()
         self.canvas.bind("<Button-1>", self.key_pressed)
-
+        
         self.compType = None
 
         self.dibujado_linea = True
@@ -146,13 +170,13 @@ class Ventana_Principal:
                                          image=images[2])
         self.botonSelec.place(x=370, y=630)
 
-        self.tituloAsc = tkinter.Label(ventana, text="", bg="#525252", fg="white", font="Bahnschrift 14 bold")
+        self.tituloAsc = tkinter.Label(ventana, text="", bg="#525252", fg="#82E0FE", font="Bahnschrift 14 bold")
         self.tituloAsc.place(x=1170, y=25)
         
         self.ascend = tkinter.Label(ventana, text="", bg="#525252", fg="white", font="Bahnschrift 12 bold")
         self.ascend.place(x=1170, y=75)
 
-        self.tituloDesc = tkinter.Label(ventana, text="", bg="#525252", fg="white", font="Bahnschrift 14 bold")
+        self.tituloDesc = tkinter.Label(ventana, text="", bg="#525252", fg="#82E0FE", font="Bahnschrift 14 bold")
         self.tituloDesc.place(x=1170, y=325)
         
         self.descend = tkinter.Label(ventana, text="", bg="#525252", fg="white", font="Bahnschrift 12 bold")
@@ -186,6 +210,10 @@ class Ventana_Principal:
         label4.bind("<Button-1>", drag_start)
         label4.bind("<B1-Motion>", drag_motion)
 
+        if filename != None:
+            loadSave(self.graph, filename, self.canvas)
+        
+    
     def save(self):
         filename = simpledialog.askstring("Nombre del archivo", "Ingrese el nombre del archivo de guardado")
         generateSave(graph, filename)
@@ -297,16 +325,6 @@ class Ventana_Principal:
         self.placeNodo = False
 
     def drawNode(self):
-        ''' 
-            graph.addNode(self.canvas, 1,1, "Node_1_1")
-            graph.addNode(self.canvas,1,2, "Node_1_2")
-            graph.addNode(self.canvas,3,1, "Node_3_1")
-            graph.addNode(self.canvas,1,4, "Node_1_4")
-            graph.addArc(self.canvas,"Node_1_1","Node_1_2", "resistor", "Resistencia_1", 43634,[1,1], [2,2])
-            graph.addArc(self.canvas,"Node_1_1","Node_3_1", "resistor", "Resistencia_1", 646,[1,5], [7,2])
-            graph.addArc(self.canvas, "Node_1_4","Node_1_2", "resistor", "Resistencia_1", 879,[6,8], [7,4])
-            generateSave(graph, "prueba")
-        '''
         if not graph.checkNode("Node_" + str(self.position[0]) + "_" + str(self.position[1])):
             graph.addNode(self.canvas, self.position[0], self.position[1],"Node_" + str(self.position[0]) + "_" + str(self.position[1]))
             tituloNodo = tkinter.Label(ventana, text="Node_" + str(self.position[0]) + "_" + str(self.position[1]), bg="white", fg="black", font="Bahnschrift 8 bold")

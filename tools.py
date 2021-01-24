@@ -46,7 +46,7 @@ def generateSave(graph, filename):
 
 def loadSave(graph, filename, master):
 
-    f = open("saves/"+filename+".txt", "r")
+    f = open(filename, "r")
     save = f.read()
     line = 0
     list_nodes = []
