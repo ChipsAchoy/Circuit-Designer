@@ -1,2 +1,0 @@
-Nodes:[45,45,Node_1_1][45,95,Node_1_2][145,45,Node_3_1][45,195,Node_1_4]
-Arcs:[Node_1_1,Node_1_2,resistor,Resistencia_1,43634,1,1,2,2][Node_1_1,Node_3_1,resistor,Resistencia_1,646,1,5,7,2][Node_1_4,Node_1_2,resistor,Resistencia_1,879,6,8,7,4]

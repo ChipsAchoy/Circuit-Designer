@@ -54,7 +54,8 @@ insertionSort(listOrd):
 '''
 
 
-def insertionSort(listOrd):
+def insertion_Sort(listOrd):
+    print("desc org")
     position = 1
     while position < len(listOrd):
         ordered = False
@@ -68,6 +69,7 @@ def insertionSort(listOrd):
             else:
                 ordered = True
         position += 1
+    print(listOrd)
     return listOrd
 
 
@@ -77,7 +79,8 @@ shellSort(listOrd):
     S: Lista ordenada de forma ascendente
     R: -
 '''
-def shellSort(listOrd):
+def shell_Sort(listOrd):
+    print("asc org")
     ordered = False
     gap = len(listOrd)
     while not ordered:
@@ -111,4 +114,11 @@ def shellSort(listOrd):
                         orderedf = True
                 position += 1
             ordered = True
+    print(listOrd)
     return listOrd
+
+
+
+
+print(shell_Sort(["c", "b", "a"]))
+print(insertion_Sort(["c", "b", "a"]))

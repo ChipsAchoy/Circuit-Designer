@@ -4,8 +4,8 @@ from tkinter import *
 from tkinter import simpledialog
 from tkinter import messagebox
 from graph import *
-from ordering_algorithms import *
 
+from ordering_algorithms import insertion_Sort, shell_Sort
 from tools import *
 
 global listaCable
@@ -45,62 +45,27 @@ def drag_motion(event):
     widget.place(x=x, y=y)
 
 
-# def nuevoNodo():
-#    global placeNodo
-#   placeNodo = True
 
-
-# Esta funcion pregunta por el nombre de la resistencia y el voltaje luego los almacena en una lista
-"""
-def nuevaResistencia():
-    nuevoNombre = simpledialog.askstring("Nueva Resistencia", "Ingrese el nombre de la nueva resistencia")
-    nuevoVoltaje = simpledialog.askinteger("Nuevo Voltaje", "Ingrese el valor del voltaje")
-    if nuevoNombre == '' or nuevoVoltaje == '' or nuevoNombre == None or nuevoVoltaje == None:
-        messagebox.showerror("Error", "El nombre o el voltaje no se ingreso")
-    elif nuevoNombre in listaResistencias:
-        messagebox.showerror("Error", "Este nombre ya existe por favor ingrese otro")
-    else:
-        listaResistencias.append((nuevoNombre, nuevoVoltaje))
-        print(listaResistencias)
-
-
-# Esta funcion pregunta por el nombre de la Fuente de poder y el voltaje luego los almacena en una lista
-def nuevaFDP():
-    nuevoNombre = simpledialog.askstring("Nueva Fuente de poder", "Ingrese el nombre de la nueva fuente de poder")
-    nuevoVoltaje = simpledialog.askinteger("Nuevo Voltaje", "Ingrese el valor del voltaje")
-    if nuevoNombre == '' or nuevoVoltaje == '' or nuevoNombre == None or nuevoVoltaje == None:
-        messagebox.showerror("Error", "El nombre o el voltaje no se ingreso")
-    elif nuevoNombre in listaFDP:
-        messagebox.showerror("Error", "Este nombre ya existe por favor ingrese otro")
-    else:
-        listaFDP.append((nuevoNombre, nuevoVoltaje))
-        print(listaFDP)
-"""
-
-class Ventana_caracteristicas:
+class Ventana_Menu:
 
     # Caracteristicas principales de todas las ventanas
-    def __init__(self, title="Circuit Designer", geometry="1200x700", resizable=False):
-        self.ventana = Tk()
-        self.ventana.title(title)
-        self.ventana.geometry(geometry)
-        self.ventana.resizable(resizable,resizable)
-        self.ventana.configure(background="#525252")
-
+    def __init__(self, master, graph, images):
+        self.ventana = master
+        self.graph = graph
+        self.images = images
+        self.menu_principal()
+        
     def menu_principal(self):
-        boton1 = tkinter.Button(self.ventana, text="VENTANA NUEVA", padx=10, pady=5, command= self.open_ventana_nueva)
-        boton1.place(x=450, y=275)
-        boton2 = tkinter.Button(self.ventana, text="CARGAR VENTANA", padx=10, pady=5, command= self.open_ventana_nueva)
-        boton2.place(x=450, y=375)
-        self.ventana.mainloop()
+        self.boton1 = tkinter.Button(self.ventana, text="VENTANA NUEVA", padx=10, pady=5, command= self.open_ventana_nueva)
+        self.boton1.place(x=450, y=275)
+        self.boton2 = tkinter.Button(self.ventana, text="CARGAR VENTANA", padx=10, pady=5, command= self.open_ventana_nueva)
+        self.boton2.place(x=450, y=375)
 
     def open_ventana_nueva(self):
-        self.ventana.destroy()
-        self.ventana_principal()
-
-    def ventana_principal(self):
-        self.__init__()
-        Ventana_Principal.__init__()
+        self.boton1.destroy()
+        self.boton2.destroy()
+        vent = Ventana_Principal(self.ventana, self.graph, self.images)
+        
 
 class Ventana_Principal:
 
@@ -163,9 +128,9 @@ class Ventana_Principal:
                                  font="Bahnschrift 14 bold")
         botonFP.place(x=910, y=375)
 
-        botonSave = tkinter.Button(ventana, text="Guardar", padx=10, pady=5, command=self.save, bg="#2F2F2F", fg="#82E0FE",
+        botonSave = tkinter.Button(ventana, text="Exportar", padx=10, pady=5, command=self.save, bg="#2F2F2F", fg="#82E0FE",
                                  font="Bahnschrift 14 bold")
-        botonSave.place(x=910, y=475)
+        botonSave.place(x=910, y=525)
 
         self.botonPlay = tkinter.Button(ventana, padx=10, pady=5, command=self.startSimulation, bg="#2F2F2F",
                                         image=images[0])
@@ -174,6 +139,18 @@ class Ventana_Principal:
         self.botonSelec = tkinter.Button(ventana, padx=10, pady=5, command=self.changeMode, bg="#2F2F2F",
                                          image=images[2])
         self.botonSelec.place(x=370, y=630)
+
+        self.tituloAsc = tkinter.Label(ventana, text="", bg="#525252", fg="white", font="Bahnschrift 14 bold")
+        self.tituloAsc.place(x=1170, y=25)
+        
+        self.ascend = tkinter.Label(ventana, text="", bg="#525252", fg="white", font="Bahnschrift 12 bold")
+        self.ascend.place(x=1170, y=75)
+
+        self.tituloDesc = tkinter.Label(ventana, text="", bg="#525252", fg="white", font="Bahnschrift 14 bold")
+        self.tituloDesc.place(x=1170, y=325)
+        
+        self.descend = tkinter.Label(ventana, text="", bg="#525252", fg="white", font="Bahnschrift 12 bold")
+        self.descend.place(x=1170, y=375)
 
         tituloPlay = tkinter.Label(ventana, text="Simular", bg="#525252", fg="white", font="Bahnschrift 16 bold")
         tituloPlay.place(x=60, y=600)
@@ -190,25 +167,12 @@ class Ventana_Principal:
 
         tituloT = tkinter.Label(ventana, text="Terminales", bg="#525252", fg="white", font="Bahnschrift 16 bold")
         tituloT.place(x=720, y=600)
-        
-        label = Label(ventana, bg="red", width=10, height=5)
-        label.place(x=1110, y=25)
-
-        label2 = Label(ventana, bg="blue", width=10, height=5)
-        label2.place(x=1110, y=125)
 
         label3 = Label(ventana, image=images[4], width=43, height=43)
         label3.place(x=700, y=630)
 
-
         label4 = Label(ventana, image=images[5], width=43, height=43)
         label4.place(x=800, y=630)
-
-        label.bind("<Button-1>", drag_start)
-        label.bind("<B1-Motion>", drag_motion)
-
-        label2.bind("<Button-1>", drag_start)
-        label2.bind("<B1-Motion>", drag_motion)
 
         label3.bind("<Button-1>", drag_start)
         label3.bind("<B1-Motion>", drag_motion)
@@ -229,6 +193,22 @@ class Ventana_Principal:
         else:
             self.botonSelec.configure(image=self.images[3])
 
+    def getLists(self):
+        resist_list = []
+        for i in graph.adMatrix:
+            for j in i:
+                for x in j:
+                    if x!= None and x.component == "resistor":
+                        resist_list += [x.name]
+
+        asc_str = ""
+        des_str = ""
+        for n in shell_Sort(resist_list):
+            asc_str += n+"\n"
+        for m in insertion_Sort(resist_list):
+            des_str += m+"\n"
+        return [asc_str, des_str]
+        
     def startSimulation(self):
         global simulation
         print("------------------------------------------------------------------------")
@@ -236,8 +216,18 @@ class Ventana_Principal:
         simulation = not simulation
         if not simulation:
             self.botonPlay.configure(image=self.images[0])
+            self.ascend.configure(text="")
+            self.descend.configure(text="")
+            self.tituloAsc.configure(text="")
+            self.tituloDesc.configure(text="")
         else:
+            str_list = self.getLists()
             self.botonPlay.configure(image=self.images[1])
+            self.ascend.configure(text=str_list[0])
+            self.descend.configure(text=str_list[1])
+            self.tituloAsc.configure(text="Orden ascendente")
+            self.tituloDesc.configure(text="Orden descendente")
+            
 
     def paint(self):
         return self.paint_aux(0, 0)
@@ -317,7 +307,6 @@ class Ventana_Principal:
             tituloNodo.place(x=self.position[0] * 50 - 40, y=self.position[1] * 50 - 30)
             graph.printGraph()
             #loadSave(graph, "prueba")
-            
         else:
             messagebox.showerror("Error", "Ya hay un nodo en esa posición")
         
@@ -395,7 +384,7 @@ class Ventana_Principal:
 # Caracteristicas de la ventana
 ventana = Tk()
 ventana.title("Circuit Designer")
-ventana.geometry("1200x700")
+ventana.geometry("1400x700")
 ventana.resizable(False, False)
 ventana.configure(background="#525252")
 graph = Graph()
@@ -405,5 +394,6 @@ select_r = load_img("selec_r.png")
 select_l = load_img("selec_l.png")
 initial = load_img("init.png")
 final = load_img("final.png")
-vent = Ventana_Principal(ventana, graph, [play_i, pause_i, select_l, select_r, initial, final])
+
+vent = Ventana_Menu(ventana, graph, [play_i, pause_i, select_l, select_r, initial, final])
 ventana.mainloop()
