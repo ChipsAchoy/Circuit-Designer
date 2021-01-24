@@ -21,6 +21,15 @@ def calcularCuadricula_aux(temp1, temp2):
     else:
         return calcularCuadricula_aux(temp1 - 1, temp2 + 1)
 
+def createResImage(master,x1,y1,x2,y2):
+    sizeConst = abs(x1-x2)
+    master.create_line(x1,y1,x1+(sizeConst/6),y2+(sizeConst/3),width = 5, fill ="red")
+    master.create_line(x1+(sizeConst/6),y1+(sizeConst/3),x1+((sizeConst/6)*2),y2-(sizeConst/3),width = 5, fill ="red")
+    master.create_line(x1+((sizeConst/6)*2),y1-(sizeConst/3),x1+((sizeConst/6)*3),y2+(sizeConst/3),width = 5, fill ="red")
+    master.create_line(x1+((sizeConst/6)*3),y1+(sizeConst/3),x1+((sizeConst/6)*4),y2-(sizeConst/3),width = 5, fill ="red")
+    master.create_line(x1+((sizeConst/6)*4),y1-(sizeConst/3),x1+((sizeConst/6)*5),y2+(sizeConst/3),width = 5, fill ="red")
+    master.create_line(x1+((sizeConst/6)*5),y1+(sizeConst/3),x1+((sizeConst/6)*6),y2,width = 5, fill ="red")
+
 #Llevar una lista de cables tambien
 def generateSave(graph, filename):
     

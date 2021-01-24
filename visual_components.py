@@ -126,7 +126,8 @@ class Ventana_Principal:
                                                "_"+str(calcularCuadricula(y)//self.size)
 
         self.genColor = lambda type: "black" if type == "Cable" else "red" if type == "resistor" else "yellow"
-
+        self.biggestLine = lambda x1, y1, x2, y2: True if abs(x2 - x1) >= abs(y2 - y1) else False
+        self.calcDis = lambda x1, x2: (abs(x1 - x2) // 2) + (((abs(x1 - x2) // 2) * 0.1) * 4)
         # self.canvas.bind("<Button-1>", self.key_pressed)
 
         # TituloC hace referencia al Cable
@@ -339,7 +340,6 @@ class Ventana_Principal:
         self.line("Cable")
 
     def line(self,type,name="",value=0):
-        print("SOPUTAMASRE")
         self.dibujando = True
         self.compType = type
         self.compName = name
@@ -357,10 +357,64 @@ class Ventana_Principal:
                 else:
                     self.x2 = calcularCuadricula(evento.x)
                     self.y2 = calcularCuadricula(evento.y)
-                    self.canvas.create_line(self.x1, self.y1, self.x2, self.y2, width=5, fill = self.genColor(self.compType))
+                  #  self.canvas.create_line(self.x1, self.y1, self.x2, self.y2, width=5, fill = self.genColor(self.compType))
                     print("Se relaciona: " + self.genID("Node",self.x1,self.y1) + " con " + self.genID("Node",self.x2,self.y2))
+                    if self.biggestLine(self.x1, self.y1, self.x2, self.y2):  # Dibuja en x
+                        if self.y1 - self.y2 == 0:
+                            print("Recta")
+                            if self.x1 - self.x2 > 0:
+                                self.canvas.create_line(self.x1, self.y1, self.x2 + self.calcDis(self.x1, self.x2),
+                                                        self.y1,
+                                                        width=5)
+                                self.canvas.create_line(self.x1 - self.calcDis(self.x1, self.x2), self.y1, self.x2,
+                                                        self.y1,
+                                                        width=5)
+                                createResImage(self.canvas,self.x1 - self.calcDis(self.x1, self.x2), self.y1,
+                                                    self.x2 + self.calcDis(self.x1, self.x2), self.y1)
+                            else:
+                                self.canvas.create_line(self.x1, self.y1, self.x2 - self.calcDis(self.x1, self.x2),
+                                                        self.y1,
+                                                        width=5)
+                                self.canvas.create_line(self.x1 + self.calcDis(self.x1, self.x2), self.y1, self.x2,
+                                                        self.y1,
+                                                        width=5)
+                                createResImage(self.canvas,self.x2 - self.calcDis(self.x1, self.x2), self.y1,
+                                                    self.x1 + self.calcDis(self.x1, self.x2), self.y1)
+
+                        elif (self.y1 - self.y2 < 0 and self.x1 - self.x2 < 0) or (
+                                self.y1 - self.y2 > 0 and self.x1 - self.x2 < 0):
+                            print("Abajo")
+                            self.canvas.create_line(self.x1, self.y1, self.x2 - self.calcDis(self.x1, self.x2), self.y1,
+                                                    width=5)
+                            self.canvas.create_line(self.x1 + self.calcDis(self.x1, self.x2), self.y1, self.x2, self.y1,
+                                                    width=5)
+                            createResImage(self.canvas,self.x2 - self.calcDis(self.x1, self.x2), self.y1,
+                                                self.x1 + self.calcDis(self.x1, self.x2), self.y1)
+                            self.canvas.create_line(self.x2, self.y2, self.x2, self.y1, width=5)
+                        else:
+                            print("Arriba")
+                            self.canvas.create_line(self.x1, self.y1, self.x2 + self.calcDis(self.x1, self.x2), self.y1,
+                                                    width=5)
+                            self.canvas.create_line(self.x1 - self.calcDis(self.x1, self.x2), self.y1, self.x2, self.y1,
+                                                    width=5)
+                            createResImage(self.canvas,self.x1 - self.calcDis(self.x1, self.x2), self.y1,
+                                                self.x2 + self.calcDis(self.x1, self.x2), self.y1)
+                            self.canvas.create_line(self.x2, self.y2, self.x2, self.y1, width=5)
+                        #   self.createResImage(self.x2-self.calcDis(self.x1,self.x2),self.y1,self.x1+self.calcDis(self.x1,self.x2),self.y1)
+
+                    else:  # Dibuja en y
+                        self.canvas.create_line(self.x1, self.y1, self.x2, self.y1, width=5)
+                        #  self.canvas.create_line(self.x2, self.y2, self.x2, self.y1, width=5, fill ="red")
+                        self.canvas.create_line(self.x2, self.y2, self.x2, self.y1 - self.calcDis(self.y1, self.y2),
+                                                width=5)
+                        self.canvas.create_line(self.x2, self.y2 + self.calcDis(self.y1, self.y2), self.x2, self.y1,
+                                                width=5)
+                        createResImage(self.canvas,self.x2, self.y2 - (self.calcDis(self.y1, self.y2)), self.x2, self.y1)
+
+
                     self.dibujado_linea = True
                     self.dibujando = False
+
                     self.addLine(self.x1,self.y1,self.x2,self.y2,self.compType)
             else:
                 self.dibujando = False
@@ -371,9 +425,9 @@ class Ventana_Principal:
         if type == "resistor" or type == "source":
             graph.addArc(self.master ,self.genID("Node",x1,y1),self.genID("Node",x2,y2),self.compType,self.compName
                          , self.compValue, [x1, y1], [x2, y2])
-        else:
-            graph.addArc(self.master, self.genID("Node",x1,y1),self.genID("Node",x2,y2),"Cable",
-                         "Cable_"+str(x1)+"_"+str(y1)+"-"+str(x2)+"_"+str(y2), [x1, y1], [x2, y2])
+     #   else:
+    #        graph.addArc(self.master, self.genID("Node",x1,y1),self.genID("Node",x2,y2),"Cable",
+   #                      "Cable_"+str(x1)+"_"+str(y1)+"-"+str(x2)+"_"+str(y2), [x1, y1], [x2, y2])
 
         graph.printGraph()
 
