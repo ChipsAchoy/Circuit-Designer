@@ -21,14 +21,31 @@ def calcularCuadricula_aux(temp1, temp2):
     else:
         return calcularCuadricula_aux(temp1 - 1, temp2 + 1)
 
-def createResImage(master,x1,y1,x2,y2):
-    sizeConst = abs(x1-x2)
-    master.create_line(x1,y1,x1+(sizeConst/6),y2+(sizeConst/3),width = 5, fill ="red")
-    master.create_line(x1+(sizeConst/6),y1+(sizeConst/3),x1+((sizeConst/6)*2),y2-(sizeConst/3),width = 5, fill ="red")
-    master.create_line(x1+((sizeConst/6)*2),y1-(sizeConst/3),x1+((sizeConst/6)*3),y2+(sizeConst/3),width = 5, fill ="red")
-    master.create_line(x1+((sizeConst/6)*3),y1+(sizeConst/3),x1+((sizeConst/6)*4),y2-(sizeConst/3),width = 5, fill ="red")
-    master.create_line(x1+((sizeConst/6)*4),y1-(sizeConst/3),x1+((sizeConst/6)*5),y2+(sizeConst/3),width = 5, fill ="red")
-    master.create_line(x1+((sizeConst/6)*5),y1+(sizeConst/3),x1+((sizeConst/6)*6),y2,width = 5, fill ="red")
+def createResImage(master,x1,y1,x2,y2,horizontal,type):
+    if type == "resistor":
+        if horizontal:
+            sizeConst = abs(x1-x2)
+            master.create_line(x1,y1,x1+(sizeConst/6),y2+(sizeConst/3),width = 5, fill ="red")
+            master.create_line(x1+(sizeConst/6),y1+(sizeConst/3),x1+((sizeConst/6)*2),y2-(sizeConst/3),width = 5, fill ="red")
+            master.create_line(x1+((sizeConst/6)*2),y1-(sizeConst/3),x1+((sizeConst/6)*3),y2+(sizeConst/3),width = 5, fill ="red")
+            master.create_line(x1+((sizeConst/6)*3),y1+(sizeConst/3),x1+((sizeConst/6)*4),y2-(sizeConst/3),width = 5, fill ="red")
+            master.create_line(x1+((sizeConst/6)*4),y1-(sizeConst/3),x1+((sizeConst/6)*5),y2+(sizeConst/3),width = 5, fill ="red")
+            master.create_line(x1+((sizeConst/6)*5),y1+(sizeConst/3),x1+((sizeConst/6)*6),y2,width = 5, fill ="red")
+        else:
+            sizeConst = abs(y1-y2)
+            master.create_line(x1,y1,x1+(sizeConst/3),y1+(sizeConst/6),width = 5, fill ="red")
+            master.create_line(x1 + (sizeConst / 3), y1+(sizeConst/6), x1 - (sizeConst / 3), y1 + ((sizeConst/6)*2), width=5, fill="red")
+            master.create_line(x1 - (sizeConst / 3), y1 + ((sizeConst/6)*2), x1 + (sizeConst / 3), y1 + ((sizeConst/6)*3), width=5, fill="red")
+            master.create_line(x1 + (sizeConst / 3), y1+((sizeConst/6)*3), x1 - (sizeConst / 3), y1 + ((sizeConst/6)*4), width=5, fill="red")
+            master.create_line(x1 - (sizeConst / 3), y1+((sizeConst/6)*4), x1 + (sizeConst / 3), y1 + ((sizeConst/6)*5), width=5, fill="red")
+            master.create_line(x1 + (sizeConst / 3), y1+((sizeConst/6)*5), x1, y1 + sizeConst, width=5, fill="red")
+    else:
+        sizeConst = 25
+        if horizontal:
+            master.create_oval(x1,y1-sizeConst,x2,y2+sizeConst,fill = "yellow")
+        else:
+            master.create_oval(x1-sizeConst,y1,x2+sizeConst,y2,fill = "yellow")
+
 
 #Llevar una lista de cables tambien
 def generateSave(graph, filename):

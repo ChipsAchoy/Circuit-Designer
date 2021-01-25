@@ -11,7 +11,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3314e97c-7044-4b42-9432-008802b512a9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visual_components.py" beforeDir="false" afterPath="$PROJECT_DIR$/visual_components.py" afterDir="false" />
@@ -44,7 +43,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../QALHALLA" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -196,7 +195,9 @@
       <workItem from="1611034916413" duration="7129000" />
       <workItem from="1611261740937" duration="13646000" />
       <workItem from="1611343323562" duration="8058000" />
-      <workItem from="1611519169344" duration="1113000" />
+      <workItem from="1611519169344" duration="5538000" />
+      <workItem from="1611540756693" duration="178000" />
+      <workItem from="1611541515759" duration="14008000" />
     </task>
     <task id="LOCAL-00001" summary="Se agrega el git ignore xd">
       <created>1610166646035</created>
@@ -272,7 +273,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Circuit_Designer$Matriz_nodo.coverage" NAME="Matriz nodo Coverage Results" MODIFIED="1610947690507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Circuit_Designer$circuit_designer.coverage" NAME="circuit_designer Coverage Results" MODIFIED="1610753270412" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Circuit_Designer$visual_components.coverage" NAME="visual_components Coverage Results" MODIFIED="1611520284902" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Circuit_Designer$visual_components.coverage" NAME="visual_components Coverage Results" MODIFIED="1611605356294" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Circuit_Designer$OrderingAlgorithms.coverage" NAME="OrderingAlgorithms Coverage Results" MODIFIED="1610563179097" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/OrderingAlgorithms" />
     <SUITE FILE_PATH="coverage/Circuit_Designer$Componentes_Visuales.coverage" NAME="Componentes Visuales Coverage Results" MODIFIED="1611275321134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

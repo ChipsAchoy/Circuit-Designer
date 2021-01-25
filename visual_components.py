@@ -363,58 +363,57 @@ class Ventana_Principal:
                         if self.y1 - self.y2 == 0:
                             print("Recta")
                             if self.x1 - self.x2 > 0:
-                                self.canvas.create_line(self.x1, self.y1, self.x2 + self.calcDis(self.x1, self.x2),
-                                                        self.y1,
-                                                        width=5)
-                                self.canvas.create_line(self.x1 - self.calcDis(self.x1, self.x2), self.y1, self.x2,
-                                                        self.y1,
-                                                        width=5)
-                                createResImage(self.canvas,self.x1 - self.calcDis(self.x1, self.x2), self.y1,
-                                                    self.x2 + self.calcDis(self.x1, self.x2), self.y1)
+                                self.canvas.create_line(self.x1, self.y1, self.x2 + self.calcDis(self.x1, self.x2),self.y1,width=5)
+                                self.canvas.create_line(self.x1 - self.calcDis(self.x1, self.x2), self.y1, self.x2,self.y1,width=5)
+                                createResImage(self.canvas,self.x1 - self.calcDis(self.x1, self.x2), self.y1,self.x2 + self.calcDis(self.x1, self.x2), self.y1,True,self.compType)
                             else:
-                                self.canvas.create_line(self.x1, self.y1, self.x2 - self.calcDis(self.x1, self.x2),
-                                                        self.y1,
-                                                        width=5)
-                                self.canvas.create_line(self.x1 + self.calcDis(self.x1, self.x2), self.y1, self.x2,
-                                                        self.y1,
-                                                        width=5)
-                                createResImage(self.canvas,self.x2 - self.calcDis(self.x1, self.x2), self.y1,
-                                                    self.x1 + self.calcDis(self.x1, self.x2), self.y1)
+                                self.canvas.create_line(self.x1, self.y1, self.x2 - self.calcDis(self.x1, self.x2),self.y1,width=5)
+                                self.canvas.create_line(self.x1 + self.calcDis(self.x1, self.x2), self.y1, self.x2,self.y1, width=5)
+                                createResImage(self.canvas,self.x2 - self.calcDis(self.x1, self.x2), self.y1,self.x1 + self.calcDis(self.x1, self.x2), self.y1,True,self.compType)
 
                         elif (self.y1 - self.y2 < 0 and self.x1 - self.x2 < 0) or (
                                 self.y1 - self.y2 > 0 and self.x1 - self.x2 < 0):
                             print("Abajo")
-                            self.canvas.create_line(self.x1, self.y1, self.x2 - self.calcDis(self.x1, self.x2), self.y1,
-                                                    width=5)
-                            self.canvas.create_line(self.x1 + self.calcDis(self.x1, self.x2), self.y1, self.x2, self.y1,
-                                                    width=5)
-                            createResImage(self.canvas,self.x2 - self.calcDis(self.x1, self.x2), self.y1,
-                                                self.x1 + self.calcDis(self.x1, self.x2), self.y1)
+                            self.canvas.create_line(self.x1, self.y1, self.x2 - self.calcDis(self.x1, self.x2), self.y1,width=5)
+                            self.canvas.create_line(self.x1 + self.calcDis(self.x1, self.x2), self.y1, self.x2, self.y1,width=5)
+                            createResImage(self.canvas,self.x2 - self.calcDis(self.x1, self.x2), self.y1,self.x1 + self.calcDis(self.x1, self.x2), self.y1,True,self.compType)
                             self.canvas.create_line(self.x2, self.y2, self.x2, self.y1, width=5)
                         else:
                             print("Arriba")
-                            self.canvas.create_line(self.x1, self.y1, self.x2 + self.calcDis(self.x1, self.x2), self.y1,
-                                                    width=5)
-                            self.canvas.create_line(self.x1 - self.calcDis(self.x1, self.x2), self.y1, self.x2, self.y1,
-                                                    width=5)
-                            createResImage(self.canvas,self.x1 - self.calcDis(self.x1, self.x2), self.y1,
-                                                self.x2 + self.calcDis(self.x1, self.x2), self.y1)
+                            self.canvas.create_line(self.x1, self.y1, self.x2 + self.calcDis(self.x1, self.x2), self.y1,width=5)
+                            self.canvas.create_line(self.x1 - self.calcDis(self.x1, self.x2), self.y1, self.x2, self.y1,width=5)
+                            createResImage(self.canvas,self.x1 - self.calcDis(self.x1, self.x2), self.y1,self.x2 + self.calcDis(self.x1, self.x2), self.y1,True,self.compType)
                             self.canvas.create_line(self.x2, self.y2, self.x2, self.y1, width=5)
-                        #   self.createResImage(self.x2-self.calcDis(self.x1,self.x2),self.y1,self.x1+self.calcDis(self.x1,self.x2),self.y1)
-
                     else:  # Dibuja en y
-                        self.canvas.create_line(self.x1, self.y1, self.x2, self.y1, width=5)
-                        #  self.canvas.create_line(self.x2, self.y2, self.x2, self.y1, width=5, fill ="red")
-                        self.canvas.create_line(self.x2, self.y2, self.x2, self.y1 - self.calcDis(self.y1, self.y2),
-                                                width=5)
-                        self.canvas.create_line(self.x2, self.y2 + self.calcDis(self.y1, self.y2), self.x2, self.y1,
-                                                width=5)
-                        createResImage(self.canvas,self.x2, self.y2 - (self.calcDis(self.y1, self.y2)), self.x2, self.y1)
-
+                        if self.x1 - self.x2 == 0:#Linea recta
+                            if self.y1 - self.y2 > 0:
+                                self.canvas.create_line(self.x1,self.y1,self.x1,self.y2+self.calcDis(self.y1,self.y2), width = 5)
+                                self.canvas.create_line(self.x1,self.y1-self.calcDis(self.y1,self.y2),self.x1,self.y2, width = 5)
+                                createResImage(self.canvas,self.x1,self.y1-self.calcDis(self.y1,self.y2),self.x1,self.y2+self.calcDis(self.y1,self.y2),False,self.compType)
+                            else:
+                                self.canvas.create_line(self.x1,self.y1,self.x1,self.y2-self.calcDis(self.y1,self.y2), width = 5)
+                                self.canvas.create_line(self.x1,self.y1+self.calcDis(self.y1,self.y2),self.x1,self.y2, width = 5)
+                                createResImage(self.canvas,self.x2,self.y2-self.calcDis(self.y1,self.y2),self.x2,self.y1+self.calcDis(self.y1,self.y2),False,self.compType)
+                        elif (self.x1 - self.x2 < 0 and self.y1 - self.y2 < 0) or (self.x1 - self.x2 > 0 and self.y1 - self.y2 < 0):
+                            print("Izquierda")
+                            self.canvas.create_line(self.x1, self.y1, self.x1, self.y2 - self.calcDis(self.y1, self.y2), width=5)
+                            self.canvas.create_line(self.x1, self.y1 + self.calcDis(self.y1, self.y2), self.x1, self.y2,width=5)
+                            createResImage(self.canvas,self.x1,self.y2-self.calcDis(self.y1,self.y2),self.x1,self.y1+self.calcDis(self.y1,self.y2),False,self.compType)
+                            self.canvas.create_line(self.x2,self.y2,self.x1,self.y2,width = 5)
+                        else:
+                            print("Derecha")
+                            self.canvas.create_line(self.x1, self.y1, self.x1, self.y2 + self.calcDis(self.y1, self.y2),
+                                                    width=5)
+                            self.canvas.create_line(self.x1, self.y1 - self.calcDis(self.y1, self.y2), self.x1, self.y2,
+                                                    width=5)
+                            createResImage(self.canvas, self.x1, self.y1 - self.calcDis(self.y1, self.y2), self.x1,
+                                           self.y2 + self.calcDis(self.y1, self.y2), False, self.compType)
+                            self.canvas.create_line(self.x2,self.y2,self.x1,self.y2,width = 5)
 
                     self.dibujado_linea = True
                     self.dibujando = False
-
+                    print(self.calcDis(self.x1, self.x2))
+                    print(self.calcDis(self.y1, self.y2))
                     self.addLine(self.x1,self.y1,self.x2,self.y2,self.compType)
             else:
                 self.dibujando = False
