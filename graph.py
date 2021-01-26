@@ -7,7 +7,7 @@ from tkinter import *
 from tkinter import simpledialog
 from tkinter import messagebox
 from tools import generateSave
-import random, time
+import random
 
 '''
 Clase Node: Nodo utilizado en el grafo
@@ -82,10 +82,11 @@ Clase Arc: Arcos utilizados en el grafo, pueden representar tanto una resistenci
 
 class Arc:
     
-    def __init__(self, master, component, name, value, d1, d2):
+    def __init__(self, master, component, name, value, d1, d2, direction):
         self.master = master
         self.d1 = d1
         self.d2 = d2
+        self.direction = direction
         self.value = value
         self.component = component
         self.name = name
@@ -192,8 +193,8 @@ class Graph:
                     tmp[i][j] = trans[i][j]
             self.adMatrix = tmp
 
-    def addArc(self, master, id1, id2, component, name, value, d1, d2):
-        arc = Arc(master, component, name, value, d1, d2)
+    def addArc(self, master, id1, id2, component, name, value, d1, d2, direction):
+        arc = Arc(master, component, name, value, d1, d2, direction)
         if self.checkNode(id1) and self.checkNode(id2):
             index1 = self.nodes.index(self.getById(id1))
             index2 = self.nodes.index(self.getById(id2))

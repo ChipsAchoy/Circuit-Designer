@@ -106,8 +106,6 @@ class Ventana_Principal:
         self.const = 50
         self.size = 50
         
-        
-        
         self.paint()
         self.canvas.bind("<Button-1>", self.key_pressed)
         
@@ -163,6 +161,10 @@ class Ventana_Principal:
                                  font="Bahnschrift 14 bold")
         botonSave.place(x=910, y=525)
 
+        botonClear = tkinter.Button(ventana, text="Limpiar", padx=10, pady=5, command=self.clear, bg="#2F2F2F",fg="#FF5757",
+                                   font="Bahnschrift 14 bold")
+        botonClear.place(x=910, y=450)
+
         self.botonPlay = tkinter.Button(ventana, padx=10, pady=5, command=self.startSimulation, bg="#2F2F2F",
                                         image=images[0])
         self.botonPlay.place(x=70, y=630)
@@ -211,10 +213,43 @@ class Ventana_Principal:
         label4.bind("<Button-1>", drag_start)
         label4.bind("<B1-Motion>", drag_motion)
 
+        self.canvas.bind('<Motion>', self.motion)
+
         if filename != None:
             loadSave(self.graph, filename, self.canvas)
-        
-    
+
+
+    def clear(self):
+        global graph
+        new_graph = Graph()
+        graph = new_graph
+        self.graph = new_graph
+        self.canvas.destroy()
+        self.canvas = Canvas(self.master, width=901, height=601, highlightthickness=0, relief="ridge")
+        self.canvas.place(x=0, y=0)
+        self.canvas.bind('<Motion>', self.motion)
+        self.paint()
+
+
+        self.paint()
+        self.canvas.bind("<Button-1>", self.key_pressed)
+
+    def motion(self, event):
+        global simulation
+        xn, yn = event.x, event.y
+        print('{}, {}'.format(xn, yn))
+        if simulation:
+            label = Label(self.canvas, text="", bg="#7657FF", fg="white", font="Bahnschrift 12 bold")
+            for i in graph.adMatrix:
+                for j in i:
+                    for n in j:
+                        if n != None:
+                            if n.direction[0] == "Horizontal" and xn > n.d1[0]-10 and xn < n.d2[0]+10 and yn > n.d1[1]-10 and yn < n.d2[1]+10:
+                                label.configure(text="Component:"+n.component+"\nVoltage: "+str(n.volts)+"\nCurrent: "+str(n.current)+"\nResistance: "+str(n.ohms))
+                                label.place(x=xn/2, y=yn-40)
+
+
+
     def save(self):
         filename = simpledialog.askstring("Nombre del archivo", "Ingrese el nombre del archivo de guardado")
         generateSave(graph, filename)
@@ -348,6 +383,7 @@ class Ventana_Principal:
         self.canvas.bind("<Button-1>", self.line_aux)
 
     def line_aux(self, evento):
+        direction = [None, None]
         if self.dibujando:
             if graph.checkNode(self.genID("Node",evento.x,evento.y)):
                 if self.dibujado_linea:
@@ -362,6 +398,7 @@ class Ventana_Principal:
                     if self.biggestLine(self.x1, self.y1, self.x2, self.y2):  # Dibuja en x
                         if self.y1 - self.y2 == 0:
                             print("Recta")
+                            direction[1] = "Horizontal"
                             if self.x1 - self.x2 > 0:
                                 self.canvas.create_line(self.x1, self.y1, self.x2 + self.calcDis(self.x1, self.x2),self.y1,width=5)
                                 self.canvas.create_line(self.x1 - self.calcDis(self.x1, self.x2), self.y1, self.x2,self.y1,width=5)
@@ -374,18 +411,21 @@ class Ventana_Principal:
                         elif (self.y1 - self.y2 < 0 and self.x1 - self.x2 < 0) or (
                                 self.y1 - self.y2 > 0 and self.x1 - self.x2 < 0):
                             print("Abajo")
+                            direction[1] = "Abajo"
                             self.canvas.create_line(self.x1, self.y1, self.x2 - self.calcDis(self.x1, self.x2), self.y1,width=5)
                             self.canvas.create_line(self.x1 + self.calcDis(self.x1, self.x2), self.y1, self.x2, self.y1,width=5)
                             createResImage(self.canvas,self.x2 - self.calcDis(self.x1, self.x2), self.y1,self.x1 + self.calcDis(self.x1, self.x2), self.y1,True,self.compType)
                             self.canvas.create_line(self.x2, self.y2, self.x2, self.y1, width=5)
                         else:
                             print("Arriba")
+                            direction[1] = "Arriba"
                             self.canvas.create_line(self.x1, self.y1, self.x2 + self.calcDis(self.x1, self.x2), self.y1,width=5)
                             self.canvas.create_line(self.x1 - self.calcDis(self.x1, self.x2), self.y1, self.x2, self.y1,width=5)
                             createResImage(self.canvas,self.x1 - self.calcDis(self.x1, self.x2), self.y1,self.x2 + self.calcDis(self.x1, self.x2), self.y1,True,self.compType)
                             self.canvas.create_line(self.x2, self.y2, self.x2, self.y1, width=5)
                     else:  # Dibuja en y
                         if self.x1 - self.x2 == 0:#Linea recta
+                            direction[1] = "Vertical"
                             if self.y1 - self.y2 > 0:
                                 self.canvas.create_line(self.x1,self.y1,self.x1,self.y2+self.calcDis(self.y1,self.y2), width = 5)
                                 self.canvas.create_line(self.x1,self.y1-self.calcDis(self.y1,self.y2),self.x1,self.y2, width = 5)
@@ -396,12 +436,14 @@ class Ventana_Principal:
                                 createResImage(self.canvas,self.x2,self.y2-self.calcDis(self.y1,self.y2),self.x2,self.y1+self.calcDis(self.y1,self.y2),False,self.compType)
                         elif (self.x1 - self.x2 < 0 and self.y1 - self.y2 < 0) or (self.x1 - self.x2 > 0 and self.y1 - self.y2 < 0):
                             print("Izquierda")
+                            direction[0] = "Izquierda"
                             self.canvas.create_line(self.x1, self.y1, self.x1, self.y2 - self.calcDis(self.y1, self.y2), width=5)
                             self.canvas.create_line(self.x1, self.y1 + self.calcDis(self.y1, self.y2), self.x1, self.y2,width=5)
                             createResImage(self.canvas,self.x1,self.y2-self.calcDis(self.y1,self.y2),self.x1,self.y1+self.calcDis(self.y1,self.y2),False,self.compType)
                             self.canvas.create_line(self.x2,self.y2,self.x1,self.y2,width = 5)
                         else:
                             print("Derecha")
+                            direction[0] = "Derecha"
                             self.canvas.create_line(self.x1, self.y1, self.x1, self.y2 + self.calcDis(self.y1, self.y2),
                                                     width=5)
                             self.canvas.create_line(self.x1, self.y1 - self.calcDis(self.y1, self.y2), self.x1, self.y2,
@@ -414,16 +456,16 @@ class Ventana_Principal:
                     self.dibujando = False
                     print(self.calcDis(self.x1, self.x2))
                     print(self.calcDis(self.y1, self.y2))
-                    self.addLine(self.x1,self.y1,self.x2,self.y2,self.compType)
+                    self.addLine(self.x1,self.y1,self.x2,self.y2,self.compType, direction)
             else:
                 self.dibujando = False
                 self.dibujado_linea = True
                 print("No hay nodo en "+self.genID("Node",evento.x,evento.y))
 
-    def addLine(self, x1, y1, x2, y2,type):
+    def addLine(self, x1, y1, x2, y2,type, direction):
         if type == "resistor" or type == "source":
             graph.addArc(self.master ,self.genID("Node",x1,y1),self.genID("Node",x2,y2),self.compType,self.compName
-                         , self.compValue, [x1, y1], [x2, y2])
+                         , self.compValue, [x1, y1], [x2, y2], direction)
      #   else:
     #        graph.addArc(self.master, self.genID("Node",x1,y1),self.genID("Node",x2,y2),"Cable",
    #                      "Cable_"+str(x1)+"_"+str(y1)+"-"+str(x2)+"_"+str(y2), [x1, y1], [x2, y2])

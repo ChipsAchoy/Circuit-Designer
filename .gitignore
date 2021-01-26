@@ -7,3 +7,12 @@ __pycache__/graph.cpython-38.pyc
 *.pyc
 *.xml
 .idea/Circuit-Designer.iml
+.idea/Circuit-Designer.iml
+.idea/misc.xml
+.idea/workspace.xml
+__pycache__/graph.cpython-38.pyc
+__pycache__/ordering_algorithms.cpython-38.pyc
+__pycache__/tools.cpython-38.pyc
+*.pyc
+*.xml
+*.iml
