@@ -1,3 +1,9 @@
 
 __pycache__/graph.cpython-38.pyc
 *.pyc
+venv/
+_pycache_/
+__pycache__/graph.cpython-38.pyc
+*.pyc
+*.xml
+.idea/Circuit-Designer.iml
