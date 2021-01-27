@@ -207,6 +207,8 @@ class Ventana_Principal:
         label4 = Label(ventana, image=images[5], width=43, height=43)
         label4.place(x=800, y=630)
 
+        self.labelPopup = Label(self.canvas, text="", bg="#69CEFD", fg="white", font="Bahnschrift 12 bold")
+
         label3.bind("<Button-1>", drag_start)
         label3.bind("<B1-Motion>", drag_motion)
 
@@ -229,26 +231,58 @@ class Ventana_Principal:
         self.canvas.place(x=0, y=0)
         self.canvas.bind('<Motion>', self.motion)
         self.paint()
-
-
-        self.paint()
         self.canvas.bind("<Button-1>", self.key_pressed)
 
     def motion(self, event):
         global simulation
         xn, yn = event.x, event.y
-        print('{}, {}'.format(xn, yn))
+        #print('{}, {}'.format(xn, yn))
+        flag = False
         if simulation:
-            label = Label(self.canvas, text="", bg="#7657FF", fg="white", font="Bahnschrift 12 bold")
             for i in graph.adMatrix:
                 for j in i:
                     for n in j:
                         if n != None:
-                            if n.direction[0] == "Horizontal" and xn > n.d1[0]-10 and xn < n.d2[0]+10 and yn > n.d1[1]-10 and yn < n.d2[1]+10:
-                                label.configure(text="Component:"+n.component+"\nVoltage: "+str(n.volts)+"\nCurrent: "+str(n.current)+"\nResistance: "+str(n.ohms))
-                                label.place(x=xn/2, y=yn-40)
-
-
+                            x_pos = [n.d1[0], n.d2[0]]
+                            y_pos = [n.d1[1], n.d2[1]]
+                            dif_x = max(x_pos) - min(x_pos)
+                            dif_y = max(y_pos) - min(y_pos)
+                            if n.direction[0] == "horizontal" or n.direction[1] == "vertical":
+                                if xn > min(x_pos)-10 and xn < max(x_pos)+10 and yn > min(y_pos)-10 and yn < max(y_pos)+10:
+                                    flag = True
+                                    print("Component: "+n.component+"\nVoltage: "+str(n.volts)+"\nCurrent: "+str(n.current)+"\nResistance: "+str(n.ohms))
+                                    self.labelPopup.configure(text="Component: "+n.component+"\nVoltage: "+str(n.volts)+"V\nCurrent: "+str(n.current)+"mA\nResistance: "+str(n.ohms))
+                                    self.labelPopup.place(x=xn, y=yn)
+                                elif not flag:
+                                    self.labelPopup.configure(text="")
+                                    self.labelPopup.place(x=1200, y=1200)
+                            else:
+                                if dif_x >= dif_y:
+                                    if (xn > min(x_pos) - 10 and xn < max(x_pos) and yn > n.d1[1]-10 and yn < n.d1[1]+10):
+                                        flag = True
+                                        print("Component: " + n.component + "\nVoltage: " + str(
+                                            n.volts) + "\nCurrent: " + str(n.current) + "\nResistance: " + str(n.ohms))
+                                        self.labelPopup.configure(
+                                            text="Component: " + n.component + "\nVoltage: " + str(
+                                                n.volts) + "V\nCurrent: " + str(n.current) + "mA\nResistance: " + str(
+                                                n.ohms))
+                                        self.labelPopup.place(x=xn, y=yn)
+                                    elif not flag:
+                                        self.labelPopup.configure(text="")
+                                        self.labelPopup.place(x=1200, y=1200)
+                                elif dif_x < dif_y:
+                                    if (xn > n.d1[0]-10 and xn < n.d1[0]+10 and yn > max(y_pos)-10 and yn < min(y_pos)+10):
+                                        flag = True
+                                        print("Component: " + n.component + "\nVoltage: " + str(
+                                            n.volts) + "\nCurrent: " + str(n.current) + "\nResistance: " + str(n.ohms))
+                                        self.labelPopup.configure(
+                                            text="Component: " + n.component + "\nVoltage: " + str(
+                                                n.volts) + "V\nCurrent: " + str(n.current) + "mA\nResistance: " + str(
+                                                n.ohms))
+                                        self.labelPopup.place(x=xn, y=yn)
+                                    elif not flag:
+                                        self.labelPopup.configure(text="")
+                                        self.labelPopup.place(x=1200, y=1200)
 
     def save(self):
         filename = simpledialog.askstring("Nombre del archivo", "Ingrese el nombre del archivo de guardado")
@@ -270,7 +304,6 @@ class Ventana_Principal:
                 for x in j:
                     if x!= None and x.component == "resistor":
                         resist_list += [x.name]
-
         asc_str = ""
         des_str = ""
         for n in shell_Sort(resist_list):
@@ -398,7 +431,7 @@ class Ventana_Principal:
                     if self.biggestLine(self.x1, self.y1, self.x2, self.y2):  # Dibuja en x
                         if self.y1 - self.y2 == 0:
                             print("Recta")
-                            direction[1] = "Horizontal"
+                            direction[0] = "horizontal"
                             if self.x1 - self.x2 > 0:
                                 self.canvas.create_line(self.x1, self.y1, self.x2 + self.calcDis(self.x1, self.x2),self.y1,width=5)
                                 self.canvas.create_line(self.x1 - self.calcDis(self.x1, self.x2), self.y1, self.x2,self.y1,width=5)
@@ -411,21 +444,21 @@ class Ventana_Principal:
                         elif (self.y1 - self.y2 < 0 and self.x1 - self.x2 < 0) or (
                                 self.y1 - self.y2 > 0 and self.x1 - self.x2 < 0):
                             print("Abajo")
-                            direction[1] = "Abajo"
+                            direction[1] = "abajo"
                             self.canvas.create_line(self.x1, self.y1, self.x2 - self.calcDis(self.x1, self.x2), self.y1,width=5)
                             self.canvas.create_line(self.x1 + self.calcDis(self.x1, self.x2), self.y1, self.x2, self.y1,width=5)
                             createResImage(self.canvas,self.x2 - self.calcDis(self.x1, self.x2), self.y1,self.x1 + self.calcDis(self.x1, self.x2), self.y1,True,self.compType)
                             self.canvas.create_line(self.x2, self.y2, self.x2, self.y1, width=5)
                         else:
                             print("Arriba")
-                            direction[1] = "Arriba"
+                            direction[1] = "arriba"
                             self.canvas.create_line(self.x1, self.y1, self.x2 + self.calcDis(self.x1, self.x2), self.y1,width=5)
                             self.canvas.create_line(self.x1 - self.calcDis(self.x1, self.x2), self.y1, self.x2, self.y1,width=5)
                             createResImage(self.canvas,self.x1 - self.calcDis(self.x1, self.x2), self.y1,self.x2 + self.calcDis(self.x1, self.x2), self.y1,True,self.compType)
                             self.canvas.create_line(self.x2, self.y2, self.x2, self.y1, width=5)
                     else:  # Dibuja en y
                         if self.x1 - self.x2 == 0:#Linea recta
-                            direction[1] = "Vertical"
+                            direction[1] = "vertical"
                             if self.y1 - self.y2 > 0:
                                 self.canvas.create_line(self.x1,self.y1,self.x1,self.y2+self.calcDis(self.y1,self.y2), width = 5)
                                 self.canvas.create_line(self.x1,self.y1-self.calcDis(self.y1,self.y2),self.x1,self.y2, width = 5)
@@ -436,14 +469,14 @@ class Ventana_Principal:
                                 createResImage(self.canvas,self.x2,self.y2-self.calcDis(self.y1,self.y2),self.x2,self.y1+self.calcDis(self.y1,self.y2),False,self.compType)
                         elif (self.x1 - self.x2 < 0 and self.y1 - self.y2 < 0) or (self.x1 - self.x2 > 0 and self.y1 - self.y2 < 0):
                             print("Izquierda")
-                            direction[0] = "Izquierda"
+                            direction[0] = "izquierda"
                             self.canvas.create_line(self.x1, self.y1, self.x1, self.y2 - self.calcDis(self.y1, self.y2), width=5)
                             self.canvas.create_line(self.x1, self.y1 + self.calcDis(self.y1, self.y2), self.x1, self.y2,width=5)
                             createResImage(self.canvas,self.x1,self.y2-self.calcDis(self.y1,self.y2),self.x1,self.y1+self.calcDis(self.y1,self.y2),False,self.compType)
                             self.canvas.create_line(self.x2,self.y2,self.x1,self.y2,width = 5)
                         else:
                             print("Derecha")
-                            direction[0] = "Derecha"
+                            direction[0] = "derecha"
                             self.canvas.create_line(self.x1, self.y1, self.x1, self.y2 + self.calcDis(self.y1, self.y2),
                                                     width=5)
                             self.canvas.create_line(self.x1, self.y1 - self.calcDis(self.y1, self.y2), self.x1, self.y2,

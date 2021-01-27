@@ -88,7 +88,7 @@ def shell_Sort(listOrd):
         i = 0
         f = gap
         print(gap)
-        if gap != 1:
+        if gap > 1:
             while f != len(listOrd):
                 if listOrd[i] > listOrd[f]:
                     tmp = listOrd[i]

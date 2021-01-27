@@ -65,7 +65,7 @@ def generateSave(graph, filename):
             for arc in graph.adMatrix[i][j]:
                 if arc != None:
                     out += "["
-                    out += current_i+","+current_j+","+arc.component+","+arc.name+","+str(arc.value)+","+str(arc.d1[0])+","+str(arc.d1[1])+","+str(arc.d2[0])+","+str(arc.d2[1])+"]"
+                    out += current_i+","+current_j+","+arc.component+","+arc.name+","+str(arc.value)+","+str(arc.d1[0])+","+str(arc.d1[1])+","+str(arc.d2[0])+","+str(arc.d2[1])+","+str(arc.direction[0])+","+str(arc.direction[1])+"]"
     f.write(out)
     f.close()
 
@@ -120,5 +120,5 @@ def loadSave(graph, filename, master):
         graph.addNode(master, int(node[0]), int(node[1]), node[2])
 
     for arc in list_arcs:
-        graph.addArc(master, arc[0], arc[1], arc[2], arc[3], int(arc[4]), [int(arc[5]), int(arc[6])], [int(arc[7]), int(arc[8])])
+        graph.addArc(master, arc[0], arc[1], arc[2], arc[3], int(arc[4]), [int(arc[5]), int(arc[6])], [int(arc[7]), int(arc[8])], [arc[9], arc[10]])
         
