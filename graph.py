@@ -409,7 +409,7 @@ class Graph:
                 print("Abajo")
                 direction[1] = "abajo"
                 y1 = y1 + cant * 20
-                #master.create_line(x1, y1, x1, y1 + cant * 20, width=5)
+                master.create_line(x1, y1, x1, y1 - cant * 20, width=5)
 
                 master.create_line(x1, y1, x2 - calcDis(x1, x2), y1, width=5)
                 master.create_line(x1 + calcDis(x1, x2), y1, x2, y1, width=5)
@@ -420,6 +420,7 @@ class Graph:
                 print("Arriba")
                 direction[1] = "arriba"
                 y1 = y1 - cant * 20
+                master.create_line(x1, y1, x1, y1 + cant * 20, width=5)
                 master.create_line(x1, y1, x2 + calcDis(x1, x2), y1, width=5)
                 master.create_line(x1 - calcDis(x1, x2), y1, x2, y1, width=5)
                 createResImage(master, x1 - calcDis(x1, x2), y1,
@@ -428,8 +429,10 @@ class Graph:
         else:  # Dibuja en y
             if x1 - x2 == 0:  # Linea recta
                 direction[1] = "vertical"
+                x1 = x1 - cant * 20
+                master.create_line(x1, y1, x1+cant * 20, y1, width=5)
+                master.create_line(x1, y1, x2+cant * 20, y1, width=5)
                 if y1 - y2 > 0:
-                    x1 = x1 - cant * 20
                     master.create_line(x1, y1, x1, y2 + calcDis(y1, y2),
                                             width=5)
                     master.create_line(x1, y1 - calcDis(y1, y2), x1, y2,
@@ -437,7 +440,6 @@ class Graph:
                     createResImage(master, x1, y1 - calcDis(y1, y2), x1,
                                    y2 + calcDis(y1, y2), False, type)
                 else:
-                    x1 = x1 - cant * 2
                     master.create_line(x1, y1, x1, y2 - calcDis(y1, y2),
                                             width=5)
                     master.create_line(x1, y1 + calcDis(y1, y2), x1, y2,
@@ -448,6 +450,7 @@ class Graph:
                 print("Izquierda")
                 direction[0] = "izquierda"
                 x1 = x1 + cant * 20
+                master.create_line(x1, y1, x1 - cant * 20, y1, width=5)
                 master.create_line(x1, y1, x1, y2 - calcDis(y1, y2), width=5)
                 master.create_line(x1, y1 + calcDis(y1, y2), x1, y2, width=5)
                 createResImage(master, x1, y2 - calcDis(y1, y2), x1,
@@ -457,6 +460,8 @@ class Graph:
                 print("Derecha")
                 direction[0] = "derecha"
                 x1 = x1 - cant * 20
+                master.create_line(x1, y1, x1 + cant * 20, y1, width=5)
+
                 master.create_line(x1, y1, x1, y2 + calcDis(y1, y2),
                                         width=5)
                 master.create_line(x1, y1 - calcDis(y1, y2), x1, y2,
