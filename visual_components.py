@@ -416,89 +416,35 @@ class Ventana_Principal:
         self.canvas.bind("<Button-1>", self.line_aux)
 
     def line_aux(self, evento):
-        direction = [None, None]
+   #     direction = [None, None]
         if self.dibujando:
             if graph.checkNode(self.genID("Node",evento.x,evento.y)):
                 if self.dibujado_linea:
                     self.dibujado_linea = False
                     self.x1 = calcularCuadricula(evento.x)
                     self.y1 = calcularCuadricula(evento.y)
+                    print(self.x1,self.y1)
                 else:
                     self.x2 = calcularCuadricula(evento.x)
                     self.y2 = calcularCuadricula(evento.y)
+                    print(self.x2,self.y2)
                   #  self.canvas.create_line(self.x1, self.y1, self.x2, self.y2, width=5, fill = self.genColor(self.compType))
                     print("Se relaciona: " + self.genID("Node",self.x1,self.y1) + " con " + self.genID("Node",self.x2,self.y2))
-                    if self.biggestLine(self.x1, self.y1, self.x2, self.y2):  # Dibuja en x
-                        if self.y1 - self.y2 == 0:
-                            print("Recta")
-                            direction[0] = "horizontal"
-                            if self.x1 - self.x2 > 0:
-                                self.canvas.create_line(self.x1, self.y1, self.x2 + self.calcDis(self.x1, self.x2),self.y1,width=5)
-                                self.canvas.create_line(self.x1 - self.calcDis(self.x1, self.x2), self.y1, self.x2,self.y1,width=5)
-                                createResImage(self.canvas,self.x1 - self.calcDis(self.x1, self.x2), self.y1,self.x2 + self.calcDis(self.x1, self.x2), self.y1,True,self.compType)
-                            else:
-                                self.canvas.create_line(self.x1, self.y1, self.x2 - self.calcDis(self.x1, self.x2),self.y1,width=5)
-                                self.canvas.create_line(self.x1 + self.calcDis(self.x1, self.x2), self.y1, self.x2,self.y1, width=5)
-                                createResImage(self.canvas,self.x2 - self.calcDis(self.x1, self.x2), self.y1,self.x1 + self.calcDis(self.x1, self.x2), self.y1,True,self.compType)
-
-                        elif (self.y1 - self.y2 < 0 and self.x1 - self.x2 < 0) or (
-                                self.y1 - self.y2 > 0 and self.x1 - self.x2 < 0):
-                            print("Abajo")
-                            direction[1] = "abajo"
-                            self.canvas.create_line(self.x1, self.y1, self.x2 - self.calcDis(self.x1, self.x2), self.y1,width=5)
-                            self.canvas.create_line(self.x1 + self.calcDis(self.x1, self.x2), self.y1, self.x2, self.y1,width=5)
-                            createResImage(self.canvas,self.x2 - self.calcDis(self.x1, self.x2), self.y1,self.x1 + self.calcDis(self.x1, self.x2), self.y1,True,self.compType)
-                            self.canvas.create_line(self.x2, self.y2, self.x2, self.y1, width=5)
-                        else:
-                            print("Arriba")
-                            direction[1] = "arriba"
-                            self.canvas.create_line(self.x1, self.y1, self.x2 + self.calcDis(self.x1, self.x2), self.y1,width=5)
-                            self.canvas.create_line(self.x1 - self.calcDis(self.x1, self.x2), self.y1, self.x2, self.y1,width=5)
-                            createResImage(self.canvas,self.x1 - self.calcDis(self.x1, self.x2), self.y1,self.x2 + self.calcDis(self.x1, self.x2), self.y1,True,self.compType)
-                            self.canvas.create_line(self.x2, self.y2, self.x2, self.y1, width=5)
-                    else:  # Dibuja en y
-                        if self.x1 - self.x2 == 0:#Linea recta
-                            direction[1] = "vertical"
-                            if self.y1 - self.y2 > 0:
-                                self.canvas.create_line(self.x1,self.y1,self.x1,self.y2+self.calcDis(self.y1,self.y2), width = 5)
-                                self.canvas.create_line(self.x1,self.y1-self.calcDis(self.y1,self.y2),self.x1,self.y2, width = 5)
-                                createResImage(self.canvas,self.x1,self.y1-self.calcDis(self.y1,self.y2),self.x1,self.y2+self.calcDis(self.y1,self.y2),False,self.compType)
-                            else:
-                                self.canvas.create_line(self.x1,self.y1,self.x1,self.y2-self.calcDis(self.y1,self.y2), width = 5)
-                                self.canvas.create_line(self.x1,self.y1+self.calcDis(self.y1,self.y2),self.x1,self.y2, width = 5)
-                                createResImage(self.canvas,self.x2,self.y2-self.calcDis(self.y1,self.y2),self.x2,self.y1+self.calcDis(self.y1,self.y2),False,self.compType)
-                        elif (self.x1 - self.x2 < 0 and self.y1 - self.y2 < 0) or (self.x1 - self.x2 > 0 and self.y1 - self.y2 < 0):
-                            print("Izquierda")
-                            direction[0] = "izquierda"
-                            self.canvas.create_line(self.x1, self.y1, self.x1, self.y2 - self.calcDis(self.y1, self.y2), width=5)
-                            self.canvas.create_line(self.x1, self.y1 + self.calcDis(self.y1, self.y2), self.x1, self.y2,width=5)
-                            createResImage(self.canvas,self.x1,self.y2-self.calcDis(self.y1,self.y2),self.x1,self.y1+self.calcDis(self.y1,self.y2),False,self.compType)
-                            self.canvas.create_line(self.x2,self.y2,self.x1,self.y2,width = 5)
-                        else:
-                            print("Derecha")
-                            direction[0] = "derecha"
-                            self.canvas.create_line(self.x1, self.y1, self.x1, self.y2 + self.calcDis(self.y1, self.y2),
-                                                    width=5)
-                            self.canvas.create_line(self.x1, self.y1 - self.calcDis(self.y1, self.y2), self.x1, self.y2,
-                                                    width=5)
-                            createResImage(self.canvas, self.x1, self.y1 - self.calcDis(self.y1, self.y2), self.x1,
-                                           self.y2 + self.calcDis(self.y1, self.y2), False, self.compType)
-                            self.canvas.create_line(self.x2,self.y2,self.x1,self.y2,width = 5)
 
                     self.dibujado_linea = True
                     self.dibujando = False
                     print(self.calcDis(self.x1, self.x2))
                     print(self.calcDis(self.y1, self.y2))
-                    self.addLine(self.x1,self.y1,self.x2,self.y2,self.compType, direction)
+                    self.addLine(self.x1,self.y1,self.x2,self.y2,self.compType)#, direction)
             else:
                 self.dibujando = False
                 self.dibujado_linea = True
                 print("No hay nodo en "+self.genID("Node",evento.x,evento.y))
 
-    def addLine(self, x1, y1, x2, y2,type, direction):
+    def addLine(self, x1, y1, x2, y2,type):#, direction):
         if type == "resistor" or type == "source":
-            graph.addArc(self.master ,self.genID("Node",x1,y1),self.genID("Node",x2,y2),self.compType,self.compName
-                         , self.compValue, [x1, y1], [x2, y2], direction)
+            graph.addArc(self.canvas, self.genID("Node",x1,y1),self.genID("Node",x2,y2),self.compType,self.compName
+                         , self.compValue, [x1, y1], [x2, y2])#, direction)
      #   else:
     #        graph.addArc(self.master, self.genID("Node",x1,y1),self.genID("Node",x2,y2),"Cable",
    #                      "Cable_"+str(x1)+"_"+str(y1)+"-"+str(x2)+"_"+str(y2), [x1, y1], [x2, y2])
