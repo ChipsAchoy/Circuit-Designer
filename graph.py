@@ -6,7 +6,7 @@ import tkinter
 from tkinter import *
 from tkinter import simpledialog
 from tkinter import messagebox
-from tools import generateSave
+from tools import *
 import random
 
 '''
@@ -193,17 +193,24 @@ class Graph:
                     tmp[i][j] = trans[i][j]
             self.adMatrix = tmp
 
-    def addArc(self, master, id1, id2, component, name, value, d1, d2, direction):
-        arc = Arc(master, component, name, value, d1, d2, direction)
+    def addArc(self, master, id1, id2, component, name, value, d1, d2):
+
         if self.checkNode(id1) and self.checkNode(id2):
             index1 = self.nodes.index(self.getById(id1))
             index2 = self.nodes.index(self.getById(id2))
             if self.adMatrix[index1][index2] != [None]:
+                print("más")
+                arc = self.drawLine(master, d1[0], d1[1], d2[0], d2[1],
+                                          component,len(self.adMatrix[index1][index2]),name,value)
                 self.adMatrix[index1][index2] += [arc]
+                print(len(self.adMatrix[index1][index2]))
             else:
+                print("solito")
+                arc = self.drawLine(master, d1[0], d1[1], d2[0], d2[1],
+                                          component,0,name,value)
                 self.adMatrix[index1][index2] = [arc]
-                
-            print("Se ha creado arco entre "+id1+" y "+id2)
+
+            print("Se ha creado arco entre "+id1+" y "+id2+" en"+str(d1)+"-"+str(d2))
         else:
             print("No se puede crear una relación")
 
@@ -372,3 +379,97 @@ class Graph:
         for i in arcs:
             print(i.getName())
         print(output)
+
+    def drawLine(self,master,x1,y1,x2,y2,type,cant, name, value):
+        direction = [None, None]
+
+        if biggestLine(x1, y1, x2, y2):  # Dibuja en x
+            if y1 - y2 == 0:
+                print("Recta")
+                direction[0] = "horizontal"
+                master.create_line(x1,y1,x1,y1 + cant * 20,width=5)
+                master.create_line(x2,y2,x2,y2+ cant * 20,width=5)
+                y1 = y1 + cant * 20
+                if x1 - x2 > 0:
+                    master.create_line(x1, y1, x2 + calcDis(x1, x2), y1,
+                                            width=5)
+                    master.create_line(x1 - calcDis(x1, x2), y1, x2, y1,
+                                            width=5)
+                    createResImage(master, x1 - calcDis(x1, x2), y1,
+                                   x2 + calcDis(x1, x2), y1, True, type)
+                else:
+                    master.create_line(x1, y1, x2 - calcDis(x1, x2), y1,
+                                            width=5)
+                    master.create_line(x1 + calcDis(x1, x2), y1, x2, y1,
+                                            width=5)
+                    createResImage(master, x2 - calcDis(x1, x2), y1,
+                                   x1 + calcDis(x1, x2), y1, True, type)
+
+            elif (y1 - y2 < 0 and x1 - x2 < 0) or (
+                    y1 - y2 > 0 and x1 - x2 < 0):
+                print("Abajo")
+                direction[1] = "abajo"
+                y1 = y1 + cant * 20
+                master.create_line(x1, y1, x1, y1 - cant * 20, width=5)
+
+                master.create_line(x1, y1, x2 - calcDis(x1, x2), y1, width=5)
+                master.create_line(x1 + calcDis(x1, x2), y1, x2, y1, width=5)
+                createResImage(master, x2 - calcDis(x1, x2), y1,
+                               x1 + calcDis(x1, x2), y1, True, type)
+                master.create_line(x2, y2, x2, y1, width=5)
+            else:
+                print("Arriba")
+                direction[1] = "arriba"
+                y1 = y1 - cant * 20
+                master.create_line(x1, y1, x1, y1 + cant * 20, width=5)
+                master.create_line(x1, y1, x2 + calcDis(x1, x2), y1, width=5)
+                master.create_line(x1 - calcDis(x1, x2), y1, x2, y1, width=5)
+                createResImage(master, x1 - calcDis(x1, x2), y1,
+                               x2 + calcDis(x1, x2), y1, True, type)
+                master.create_line(x2, y2, x2, y1, width=5)
+        else:  # Dibuja en y
+            if x1 - x2 == 0:  # Linea recta
+                direction[1] = "vertical"
+                x1 = x1 - cant * 20
+                master.create_line(x1, y1, x1+cant * 20, y1, width=5)
+                master.create_line(x1, y1, x2+cant * 20, y1, width=5)
+                if y1 - y2 > 0:
+                    master.create_line(x1, y1, x1, y2 + calcDis(y1, y2),
+                                            width=5)
+                    master.create_line(x1, y1 - calcDis(y1, y2), x1, y2,
+                                            width=5)
+                    createResImage(master, x1, y1 - calcDis(y1, y2), x1,
+                                   y2 + calcDis(y1, y2), False, type)
+                else:
+                    master.create_line(x1, y1, x1, y2 - calcDis(y1, y2),
+                                            width=5)
+                    master.create_line(x1, y1 + calcDis(y1, y2), x1, y2,
+                                            width=5)
+                    createResImage(master, x1, y2 - calcDis(y1, y2), x1,
+                                   y1 + calcDis(y1, y2), False, type)
+            elif (x1 - x2 < 0 and y1 - y2 < 0) or (x1 - x2 > 0 and y1 - y2 < 0):
+                print("Izquierda")
+                direction[0] = "izquierda"
+                x1 = x1 + cant * 20
+                master.create_line(x1, y1, x1 - cant * 20, y1, width=5)
+                master.create_line(x1, y1, x1, y2 - calcDis(y1, y2), width=5)
+                master.create_line(x1, y1 + calcDis(y1, y2), x1, y2, width=5)
+                createResImage(master, x1, y2 - calcDis(y1, y2), x1,
+                               y1 + calcDis(y1, y2), False, type)
+                master.create_line(x2, y2, x1, y2, width=5)
+            else:
+                print("Derecha")
+                direction[0] = "derecha"
+                x1 = x1 - cant * 20
+                master.create_line(x1, y1, x1 + cant * 20, y1, width=5)
+
+                master.create_line(x1, y1, x1, y2 + calcDis(y1, y2),
+                                        width=5)
+                master.create_line(x1, y1 - calcDis(y1, y2), x1, y2,
+                                        width=5)
+                createResImage(master, x1, y1 - calcDis(y1, y2), x1,
+                               y2 + calcDis(y1, y2), False, type)
+                master.create_line(x2, y2, x1, y2, width=5)
+        print("Usando nueva función")
+        arc = Arc(master, type, name, value, [x1,y1], [x2,y2], direction)
+        return arc
