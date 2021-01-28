@@ -14,8 +14,6 @@ global listaNodos
 global listaResistencias
 global listaFDP
 
-#https://stackoverflow.com/questions/22925599/mouse-position-python-tkinter
-
 
 def load_img(name):
     if isinstance(name, str):
@@ -33,19 +31,6 @@ listaResistencias = []
 listaFDP = []
 simulation = False
 
-
-def drag_start(event):
-    widget = event.widget
-    widget.startX = event.x
-    widget.startY = event.y
-
-
-def drag_motion(event):
-    # 1.Top left corner-2.Place where we click in the label-3.Where we drag the label
-    widget = event.widget
-    x = widget.winfo_x() - widget.startX + event.x
-    y = widget.winfo_y() - widget.startY + event.y
-    widget.place(x=x, y=y)
 
 
 
@@ -201,25 +186,65 @@ class Ventana_Principal:
         tituloT = tkinter.Label(ventana, text="Terminales", bg="#525252", fg="white", font="Bahnschrift 16 bold")
         tituloT.place(x=720, y=600)
 
-        label3 = Label(ventana, image=images[4], width=43, height=43)
-        label3.place(x=700, y=630)
+        botIni = Button(ventana, image=images[4], width=43, height=43, command=self.setInicio)
+        botIni .place(x=700, y=630)
 
-        label4 = Label(ventana, image=images[5], width=43, height=43)
-        label4.place(x=800, y=630)
+        botFin  = Button(ventana, image=images[5], width=43, height=43, command=self.setFinal)
+        botFin .place(x=800, y=630)
+
+        botonClearSelec = tkinter.Button(ventana, text="Quitar selección", padx=10, pady=5, command=self.clearSelec, bg="#2F2F2F",
+                                 fg="#FF5757",
+                                 font="Bahnschrift 14 bold")
+        botonClearSelec.place(x=900, y=630)
+
+
+        self.labelInicio = Label(ventana, image=images[4], width=43, height=43)
+        self.labelFinal = Label(ventana, image=images[5], width=43, height=43)
+
+        self.setting_final = False
+        self.setting_inicio = False
 
         self.labelPopup = Label(self.canvas, text="", bg="#69CEFD", fg="white", font="Bahnschrift 12 bold")
-
-        label3.bind("<Button-1>", drag_start)
-        label3.bind("<B1-Motion>", drag_motion)
-
-        label4.bind("<Button-1>", drag_start)
-        label4.bind("<B1-Motion>", drag_motion)
 
         self.canvas.bind('<Motion>', self.motion)
 
         if filename != None:
             loadSave(self.graph, filename, self.canvas)
 
+    def clearSelec(self):
+        self.setting_inicio = False
+        self.setting_final = False
+        graph.inicio = None
+        graph.final = None
+        self.labelInicio.place(x=1200, y=1200)
+        self.labelFinal.place(x=1200, y=1200)
+
+    def setInicio(self):
+        self.setting_inicio = True
+        self.setting_final = False
+        self.canvas.bind("<Button-1>", self.clickedInicio)
+
+    def setFinal(self):
+        self.setting_final = True
+        self.setting_inicio = False
+        self.canvas.bind("<Button-1>", self.clickedFinal)
+
+    def clickedInicio(self, event):
+        position = self.adjustPosition(event.x, event.y)
+        if self.setting_inicio:
+            if graph.checkNode("Node_"+str(position[0])+"_"+str(position[1])):
+                graph.inicio = "Node_"+str(position[0])+"_"+str(position[1])
+                self.labelInicio.place(x=position[0] * 50 - 50, y=position[1] * 50 - 50)
+                print(graph.inicio)
+
+
+    def clickedFinal(self, event):
+        position = self.adjustPosition(event.x, event.y)
+        if self.setting_final:
+            if graph.checkNode("Node_" + str(position[0]) + "_" + str(position[1])):
+                graph.final = "Node_" + str(position[0]) + "_" + str(position[1])
+                self.labelFinal.place(x=position[0] * 50 - 50, y=position[1] * 50 - 50)
+                print(graph.final)
 
     def clear(self):
         global graph
@@ -247,8 +272,8 @@ class Ventana_Principal:
                             y_pos = [n.d1[1], n.d2[1]]
                             dif_x = max(x_pos) - min(x_pos)
                             dif_y = max(y_pos) - min(y_pos)
-                            if n.direction[0] == "horizontal" or n.direction[1] == "vertical":
-                                if xn > min(x_pos)-10 and xn < max(x_pos)+10 and yn > min(y_pos)-10 and yn < max(y_pos)+10:
+                            if n.direction[0] == "horizontal":
+                                if xn > min(x_pos)-5 and xn < max(x_pos)+5 and yn > max(y_pos)-5 and yn < max(y_pos)+5:
                                     flag = True
                                     print("Component: "+n.component+"\nVoltage: "+str(n.volts)+"\nCurrent: "+str(n.current)+"\nResistance: "+str(n.ohms))
                                     self.labelPopup.configure(text="Component: "+n.component+"\nVoltage: "+str(n.volts)+"V\nCurrent: "+str(n.current)+"mA\nResistance: "+str(n.ohms))
@@ -256,9 +281,20 @@ class Ventana_Principal:
                                 elif not flag:
                                     self.labelPopup.configure(text="")
                                     self.labelPopup.place(x=1200, y=1200)
+
+                            elif n.direction[1] == "vertical":
+                                if xn > min(x_pos)-5 and xn < min(x_pos)+5 and yn > min(y_pos)-5 and yn < max(y_pos)+5:
+                                    flag = True
+                                    print("Component: "+n.component+"\nVoltage: "+str(n.volts)+"\nCurrent: "+str(n.current)+"\nResistance: "+str(n.ohms))
+                                    self.labelPopup.configure(text="Component: "+n.component+"\nVoltage: "+str(n.volts)+"V\nCurrent: "+str(n.current)+"mA\nResistance: "+str(n.ohms))
+                                    self.labelPopup.place(x=xn, y=yn)
+                                elif not flag:
+                                    self.labelPopup.configure(text="")
+                                    self.labelPopup.place(x=1200, y=1200)
+
                             else:
                                 if dif_x >= dif_y:
-                                    if (xn > min(x_pos) - 10 and xn < max(x_pos) and yn > n.d1[1]-10 and yn < n.d1[1]+10):
+                                    if (xn > min(x_pos)-5 and xn < max(x_pos)+5 and yn > n.d1[1]-5 and yn < n.d1[1]+5):
                                         flag = True
                                         print("Component: " + n.component + "\nVoltage: " + str(
                                             n.volts) + "\nCurrent: " + str(n.current) + "\nResistance: " + str(n.ohms))
@@ -271,7 +307,7 @@ class Ventana_Principal:
                                         self.labelPopup.configure(text="")
                                         self.labelPopup.place(x=1200, y=1200)
                                 elif dif_x < dif_y:
-                                    if (xn > n.d1[0]-10 and xn < n.d1[0]+10 and yn > max(y_pos)-10 and yn < min(y_pos)+10):
+                                    if (xn > n.d1[0]-5 and xn < n.d1[0]+5 and yn > min(y_pos)-5 and yn < max(y_pos)+5):
                                         flag = True
                                         print("Component: " + n.component + "\nVoltage: " + str(
                                             n.volts) + "\nCurrent: " + str(n.current) + "\nResistance: " + str(n.ohms))
@@ -323,6 +359,11 @@ class Ventana_Principal:
             self.descend.configure(text="")
             self.tituloAsc.configure(text="")
             self.tituloDesc.configure(text="")
+            for i in graph.adMatrix:
+                for j in i:
+                    for x in j:
+                        if x != None:
+                            graph.drawLine(self.canvas, x.d1[0], x.d1[1], x.d2[0], x.d2[1], x.component, 0, x.name, x.value, True, False)
         else:
             str_list = self.getLists()
             self.botonPlay.configure(image=self.images[1])
@@ -330,6 +371,10 @@ class Ventana_Principal:
             self.descend.configure(text=str_list[1])
             self.tituloAsc.configure(text="Orden ascendente")
             self.tituloDesc.configure(text="Orden descendente")
+
+            if graph.inicio != None and graph.final != None:
+                graph.dijkstra(self.dijAs, self.canvas)
+
             
 
     def paint(self):

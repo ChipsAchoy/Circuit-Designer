@@ -77,11 +77,16 @@ def generateSave(graph, filename):
         current_i = list_nodes[i].id
         for j in range(len(graph.adMatrix[i])):
             current_j = list_nodes[j].id
+            base_arc = [0,0]
+            checked = False
             for arc in graph.adMatrix[i][j]:
                 if arc != None:
+                    if not checked:
+                        base_arc = [arc.d1[0], arc.d1[1]]
+                        checked = True
                     out += "["
                     out += current_i + "," + current_j + "," + arc.component + "," + arc.name + "," + str(
-                        arc.value) + "," + str(arc.d1[0]) + "," + str(arc.d1[1]) + "," + str(arc.d2[0]) + "," + str(
+                        arc.value) + "," + str(base_arc[0]) + "," + str(base_arc[1]) + "," + str(arc.d2[0]) + "," + str(
                         arc.d2[1]) + "," + str(arc.direction[0]) + "," + str(arc.direction[1]) + "]"
     f.write(out)
     f.close()
@@ -137,8 +142,5 @@ def loadSave(graph, filename, master):
 
     for arc in list_arcs:
         graph.addArc(master, arc[0], arc[1], arc[2], arc[3], int(arc[4]), [int(arc[5]), int(arc[6])],
-                     [int(arc[7]), int(arc[8])], [arc[9], arc[10]])
+                     [int(arc[7]), int(arc[8])])
 
-def fillLines(master,x1,y1,x2,y2,t1,t2):
-    if t1 == t2:
-        return

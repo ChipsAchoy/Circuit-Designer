@@ -159,6 +159,8 @@ class Graph:
         self.adMatrix = []
         self.nodes = []  # Nodos
         self.nodesCount = 0
+        self.inicio = None
+        self.final = None
 
     def checkNode(self, ident):
         checked = False
@@ -268,7 +270,9 @@ class Graph:
                 selected = elem
         return selected
 
-    def dijkstra(self, id1, id2, find):
+    def dijkstra(self, find, master):
+        id1 = self.inicio
+        id2 = self.final
         funct = None
         mat = []
         if find:
@@ -378,30 +382,42 @@ class Graph:
                 break
         for i in arcs:
             print(i.getName())
+            self.drawLine(master, i.d1[0], i.d1[1], i.d2[0], i.d2[1], i.component, 0, i.name, i.value, True, True)
+            #d1[0], d1[1], d2[0], d2[1],
+            #component, len(self.adMatrix[index1][index2]), name, value
         print(output)
 
-    def drawLine(self,master,x1,y1,x2,y2,type,cant, name, value):
+    def drawLine(self,master,x1,y1,x2,y2,type,cant, name, value, dij=False, col=False):
         direction = [None, None]
-
+        multiplier = 0
+        if not dij:
+            multiplier = 30
+        label_position = [0,0]
+        color = None
+        if col:
+            color = "#474CFF"
+        else:
+            color = "#000000"
         if biggestLine(x1, y1, x2, y2):  # Dibuja en x
             if y1 - y2 == 0:
+                label_position = [max([x1, x2]) -abs(x1-x2)//2, y1+20*cant]
                 print("Recta")
                 direction[0] = "horizontal"
-                master.create_line(x1,y1,x1,y1 + cant * 20,width=5)
-                master.create_line(x2,y2,x2,y2+ cant * 20,width=5)
-                y1 = y1 + cant * 20
+                master.create_line(x1,y1,x1,y1 + cant * multiplier,width=5, fill = color)
+                master.create_line(x2,y2,x2,y2+ cant * multiplier,width=5, fill = color)
+                y1 = y1 + cant * multiplier
                 if x1 - x2 > 0:
                     master.create_line(x1, y1, x2 + calcDis(x1, x2), y1,
-                                            width=5)
+                                            width=5, fill = color)
                     master.create_line(x1 - calcDis(x1, x2), y1, x2, y1,
-                                            width=5)
+                                            width=5, fill = color)
                     createResImage(master, x1 - calcDis(x1, x2), y1,
                                    x2 + calcDis(x1, x2), y1, True, type)
                 else:
                     master.create_line(x1, y1, x2 - calcDis(x1, x2), y1,
-                                            width=5)
+                                            width=5, fill = color)
                     master.create_line(x1 + calcDis(x1, x2), y1, x2, y1,
-                                            width=5)
+                                            width=5, fill = color)
                     createResImage(master, x2 - calcDis(x1, x2), y1,
                                    x1 + calcDis(x1, x2), y1, True, type)
 
@@ -409,67 +425,81 @@ class Graph:
                     y1 - y2 > 0 and x1 - x2 < 0):
                 print("Abajo")
                 direction[1] = "abajo"
-                y1 = y1 + cant * 20
-                master.create_line(x1, y1, x1, y1 - cant * 20, width=5)
+                y1 = y1 + cant * multiplier
+                master.create_line(x1, y1, x1, y1 - cant * multiplier, width=5, fill = color)
 
-                master.create_line(x1, y1, x2 - calcDis(x1, x2), y1, width=5)
-                master.create_line(x1 + calcDis(x1, x2), y1, x2, y1, width=5)
+                master.create_line(x1, y1, x2 - calcDis(x1, x2), y1, width=5, fill = color)
+                master.create_line(x1 + calcDis(x1, x2), y1, x2, y1, width=5, fill = color)
                 createResImage(master, x2 - calcDis(x1, x2), y1,
                                x1 + calcDis(x1, x2), y1, True, type)
-                master.create_line(x2, y2, x2, y1, width=5)
+                master.create_line(x2, y2, x2, y1, width=5, fill = color)
+                label_position = [max([x1, x2]) - abs(x1-x2)//2, y1+20*cant]
+
             else:
                 print("Arriba")
                 direction[1] = "arriba"
-                y1 = y1 - cant * 20
-                master.create_line(x1, y1, x1, y1 + cant * 20, width=5)
-                master.create_line(x1, y1, x2 + calcDis(x1, x2), y1, width=5)
-                master.create_line(x1 - calcDis(x1, x2), y1, x2, y1, width=5)
+                y1 = y1 - cant * multiplier
+                master.create_line(x1, y1, x1, y1 + cant * multiplier, width=5, fill = color)
+                master.create_line(x1, y1, x2 + calcDis(x1, x2), y1, width=5, fill = color)
+                master.create_line(x1 - calcDis(x1, x2), y1, x2, y1, width=5, fill = color)
                 createResImage(master, x1 - calcDis(x1, x2), y1,
                                x2 + calcDis(x1, x2), y1, True, type)
-                master.create_line(x2, y2, x2, y1, width=5)
+                master.create_line(x2, y2, x2, y1, width=5, fill = color)
+                label_position = [max([x1, x2]) - abs(x1-x2)//2, y1+20*cant]
+
         else:  # Dibuja en y
             if x1 - x2 == 0:  # Linea recta
+                label_position = [x1+20*cant, max([y1, y2]) - abs(y1 - y2) // 2]
                 direction[1] = "vertical"
-                x1 = x1 - cant * 20
-                master.create_line(x1, y1, x1+cant * 20, y1, width=5)
-                master.create_line(x1, y1, x2+cant * 20, y1, width=5)
+                x1 = x1 - cant * multiplier
+                master.create_line(x1, y1, x1+cant * multiplier, y1, width=5, fill = color)
+                master.create_line(x1, y1, x2+cant * multiplier, y1, width=5, fill = color)
                 if y1 - y2 > 0:
                     master.create_line(x1, y1, x1, y2 + calcDis(y1, y2),
-                                            width=5)
+                                            width=5, fill = color)
                     master.create_line(x1, y1 - calcDis(y1, y2), x1, y2,
-                                            width=5)
+                                            width=5, fill = color)
                     createResImage(master, x1, y1 - calcDis(y1, y2), x1,
                                    y2 + calcDis(y1, y2), False, type)
                 else:
                     master.create_line(x1, y1, x1, y2 - calcDis(y1, y2),
-                                            width=5)
+                                            width=5, fill = color)
                     master.create_line(x1, y1 + calcDis(y1, y2), x1, y2,
-                                            width=5)
+                                            width=5, fill = color)
                     createResImage(master, x1, y2 - calcDis(y1, y2), x1,
                                    y1 + calcDis(y1, y2), False, type)
+
             elif (x1 - x2 < 0 and y1 - y2 < 0) or (x1 - x2 > 0 and y1 - y2 < 0):
+                label_position = [x1 + 20*cant, max([y1, y2]) - abs(y1 - y2) // 2]
                 print("Izquierda")
                 direction[0] = "izquierda"
-                x1 = x1 + cant * 20
-                master.create_line(x1, y1, x1 - cant * 20, y1, width=5)
-                master.create_line(x1, y1, x1, y2 - calcDis(y1, y2), width=5)
-                master.create_line(x1, y1 + calcDis(y1, y2), x1, y2, width=5)
+                x1 = x1 + cant * multiplier
+                master.create_line(x1, y1, x1 - cant * multiplier, y1, width=5, fill = color)
+                master.create_line(x1, y1, x1, y2 - calcDis(y1, y2), width=5, fill = color)
+                master.create_line(x1, y1 + calcDis(y1, y2), x1, y2, width=5, fill = color)
                 createResImage(master, x1, y2 - calcDis(y1, y2), x1,
                                y1 + calcDis(y1, y2), False, type)
-                master.create_line(x2, y2, x1, y2, width=5)
+                master.create_line(x2, y2, x1, y2, width=5, fill = color)
             else:
                 print("Derecha")
+                label_position = [x1 + 20*cant, max([y1, y2]) - abs(y1 - y2) // 2]
                 direction[0] = "derecha"
-                x1 = x1 - cant * 20
-                master.create_line(x1, y1, x1 + cant * 20, y1, width=5)
+                x1 = x1 - cant * multiplier
+                master.create_line(x1, y1, x1 + cant * multiplier, y1, width=5, fill = color)
 
                 master.create_line(x1, y1, x1, y2 + calcDis(y1, y2),
-                                        width=5)
+                                        width=5, fill = color)
                 master.create_line(x1, y1 - calcDis(y1, y2), x1, y2,
-                                        width=5)
+                                        width=5, fill = color)
                 createResImage(master, x1, y1 - calcDis(y1, y2), x1,
                                y2 + calcDis(y1, y2), False, type)
-                master.create_line(x2, y2, x1, y2, width=5)
+                master.create_line(x2, y2, x1, y2, width=5, fill = color)
+
         print("Usando nueva función")
-        arc = Arc(master, type, name, value, [x1,y1], [x2,y2], direction)
-        return arc
+        print([x1, y1,], [x2,y2])
+        if not dij:
+            arc = Arc(master, type, name, value, [x1,y1], [x2,y2], direction)
+            tituloArc = tkinter.Label(master, text=arc.name,
+                                       bg="white", fg="black", font="Bahnschrift 10 bold")
+            tituloArc.place(x=label_position[0], y=label_position[1])
+            return arc

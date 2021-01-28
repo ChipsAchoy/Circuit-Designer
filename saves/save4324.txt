@@ -1,2 +1,0 @@
-Nodes:[13,5,Node_13_5][10,5,Node_10_5][12,8,Node_12_8]
-Arcs:[Node_13_5,Node_12_8,resistor,r2,13123,650,250,600,400,Izquierda,None][Node_10_5,Node_13_5,resistor,r1,123123,500,250,650,250,None,Horizontal][Node_12_8,Node_10_5,resistor,r4,12312,600,400,500,250,Derecha,None]
