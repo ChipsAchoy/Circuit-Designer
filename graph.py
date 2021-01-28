@@ -222,6 +222,7 @@ class Graph:
 
     def printGraph(self):
         for i in self.adMatrix:
+        #for i in range(9):
             print("[", end="")
             for j in i:
                 print("[", end="")
