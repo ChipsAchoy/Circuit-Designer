@@ -92,14 +92,16 @@ class Ventana_Menu:
         vent = Ventana_Principal(self.ventana, self.graph, self.images, self.filename)
         
         
-    def import_file(self): 
-        self.filename = filedialog.askopenfilename(initialdir = "C:/Users/INTEL/Documents/GitHub/Circuit-Designer/saves/", title = "Select a File", 
-                                              filetypes = (("Text files", 
-                                                            "*.txt*"), 
-                                                           ("all files", 
-                                                            "*.*")))    
+    def import_file(self):
+
+        self.filename = filedialog.askopenfilename(initialdir = "C:/Users/INTEL/Documents/GitHub/Circuit-Designer/saves/", title = "Select a File",
+                                                  filetypes = (("Text files",
+                                                                "*.txt*"),
+                                                               ("all files",
+                                                                "*.*")))
         print(self.filename)
         self.open_ventana_nueva()
+
         
 '''
 clase Ventana_Principal
@@ -152,6 +154,7 @@ clase Ventana_Principal
         nuevaFPD(): Coloca una nueva fuente de poder
                 
 '''
+
 class Ventana_Principal:
 
     def __init__(self, master, graph, images, filename):
