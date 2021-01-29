@@ -116,9 +116,3 @@ def shell_Sort(listOrd):
             ordered = True
     print(listOrd)
     return listOrd
-
-
-
-
-print(shell_Sort(["c", "b", "a"]))
-print(insertion_Sort(["c", "b", "a"]))

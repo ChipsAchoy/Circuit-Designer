@@ -382,16 +382,28 @@ class Graph:
                 break
         for i in arcs:
             print(i.getName())
-            self.drawLine(master, i.d1[0], i.d1[1], i.d2[0], i.d2[1], i.component, 0, i.name, i.value, True, True)
+            self.drawLine(master, self.getFirstIn(i)[0], self.getFirstIn(i)[1], i.d2[0], i.d2[1], i.component, self.getPositionIn(i), i.name, i.value, True, True)
             #d1[0], d1[1], d2[0], d2[1],
             #component, len(self.adMatrix[index1][index2]), name, value
         print(output)
 
+    def getPositionIn(self, elem):
+        for i in self.adMatrix:
+            for j in i:
+                for x in range(len(j)):
+                    if j[x] == elem:
+                        return x
+
+    def getFirstIn(self, elem):
+        for i in self.adMatrix:
+            for j in i:
+                for x in range(len(j)):
+                    if j[x] == elem:
+                        return [j[0].d1[0], j[0].d1[1]]
+
     def drawLine(self,master,x1,y1,x2,y2,type,cant, name, value, dij=False, col=False):
         direction = [None, None]
-        multiplier = 0
-        if not dij:
-            multiplier = 30
+        multiplier = 30
         label_position = [0,0]
         color = None
         if col:

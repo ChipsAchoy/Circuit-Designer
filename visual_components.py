@@ -14,6 +14,12 @@ global listaNodos
 global listaResistencias
 global listaFDP
 
+'''
+load_img(name): Encuentra una imagen segun la ruta dentro de la carpeta imgs
+    E: string del nombre del archivo
+    S: el objeto PhotoImage relacionado dicha direccion
+    R: La ruta debe de existir
+'''
 
 def load_img(name):
     if isinstance(name, str):
@@ -31,8 +37,9 @@ listaResistencias = []
 listaFDP = []
 simulation = False
 
+'''
 
-
+'''
 
 class Ventana_Menu:
 
@@ -361,9 +368,16 @@ class Ventana_Principal:
             self.tituloDesc.configure(text="")
             for i in graph.adMatrix:
                 for j in i:
+                    current_len = 1
+                    init_pos = [0,0]
+                    init_got = False
                     for x in j:
                         if x != None:
-                            graph.drawLine(self.canvas, x.d1[0], x.d1[1], x.d2[0], x.d2[1], x.component, 0, x.name, x.value, True, False)
+                            if not init_got:
+                                init_pos = [x.d1[0], x.d1[1]]
+                                init_got = True
+                            graph.drawLine(self.canvas, init_pos[0], init_pos[1], x.d2[0], x.d2[1], x.component, current_len-1, x.name, x.value, True, False)
+                            current_len += 1
         else:
             str_list = self.getLists()
             self.botonPlay.configure(image=self.images[1])
