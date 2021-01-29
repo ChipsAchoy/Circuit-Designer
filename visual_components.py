@@ -190,12 +190,9 @@ class Ventana_Principal:
         # self.canvas.bind("<Button-1>", self.key_pressed)
 
         # TituloC hace referencia al Cable
-        tituloR = tkinter.Label(ventana, text="Cable", bg="#525252", fg="white", font="Bahnschrift 20 bold")
-        tituloR.place(x=910, y=25)
+        logoSmall = tkinter.Label(ventana, image=images[6], width=79, height=101, bg="#525252")
+        logoSmall.place(x=910, y=25)
 
-        botonR = tkinter.Button(ventana, text="Agregar", padx=10, pady=5, command=self.genCable, bg="#2F2F2F", fg="#D1E10C",
-                                font="Bahnschrift 14 bold")
-        botonR.place(x=910, y=75)
 
         # TituloN hace referencia al Nodo
         tituloR = tkinter.Label(ventana, text="Nodo", bg="#525252", fg="white", font="Bahnschrift 20 bold")
@@ -620,6 +617,6 @@ select_r = load_img("selec_r.png")
 select_l = load_img("selec_l.png")
 initial = load_img("init.png")
 final = load_img("final.png")
-
-vent = Ventana_Menu(ventana, graph, [play_i, pause_i, select_l, select_r, initial, final])
+logoSmall = load_img("logo_chikito_uwu.png")
+vent = Ventana_Menu(ventana, graph, [play_i, pause_i, select_l, select_r, initial, final, logoSmall])
 ventana.mainloop()
