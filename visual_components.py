@@ -38,7 +38,23 @@ listaFDP = []
 simulation = False
 
 '''
-
+clase VentanaMenu: Interfaz del menu principal
+    
+    Atributos: 
+        master (Tk), graph(Graph), images(PhotoImage list)  
+    Metodos:
+        __init__(master, graph, images):
+            E: un TK, un objeto Graph y una lista de imagenes
+            S: -
+            R: -
+        menu_principal(): Abre la ventana del menu y crea objetos en ella
+            E: -
+            S: -
+            R: -
+        open_ventana_nueva(): Abre la Ventana Principal
+            E: -
+            S: -
+            R: -
 '''
 
 class Ventana_Menu:
@@ -85,7 +101,57 @@ class Ventana_Menu:
         print(self.filename)
         self.open_ventana_nueva()
         
-
+'''
+clase Ventana_Principal
+    Atribuitos: 
+        master (Tk), graph(Graph), images(PhotoImage list), canvas (Canvas), position(int list), const(int), size(int), dibujando_linea(boolean),
+        dibujando(boolean), placeNodo(boolean), dijAs(boolean), compName(str), compValue(int)
+    Metodos:
+        clearSelec(): Deselecciona ambos botones de Dijsktra
+        setInicio(): Selecciona un nodo inicial para realizar dijkstra
+        setFinal(): Selecciona un nodo final para realizar dijkstra
+        clickedInicio(event): Evento al clickear el boton de inicio
+            E: posicion del mouse en ese momento
+            S: -
+            R: -
+        clickedFinal(event): Evento al clickear el boton de final
+            E: posicion del mouse en ese momento
+            S: -
+            R: -
+        clear(): Limpia el canvas de resistencias y nodos y resetea el grafo
+        motion(event): Evento al mover el mouse durante la simulacion
+            E: posicion del mouse en ese momento
+            S: -
+            R: -
+        save(): Realiza el guardado de una pantalla especifica
+        changeMode(): Cambia el modo de busqueda en dijkstra
+        getLists(): Realiza los llamados para ordenar las listas
+            E: -
+            S: Retorna las listas ordenadas de forma ascendente y descendente en una lista
+            R: -
+        startSimulation(): Inicia la simulacion con las condiciones actuales
+        paint() & paint_aux(i, j): Coloca la cuadricula en la pantalla
+            paint():
+                E: -
+                S: La salida de paint_aux
+                R: -
+            paint_aux(i,j):
+                E: Las dos coordenadas inciales
+                S: -
+                R: -
+        adjustPosition(x, y): Aproxima una posicion a una posicion de la cuadricula
+            E: posiciones x y y
+            S: La posicion aproxima a la escala de la cuadricula
+            R: -
+        key_pressed(event): Evento que se activa al clickear el canvas para poner un nodo
+            E: posicion del mouse en ese momento
+            S: -
+            R: -
+        drawNode(): Dibuja un nodo en pantalla
+        nuevaResistencia(): Coloca una nueva resistencia
+        nuevaFPD(): Coloca una nueva fuente de poder
+                
+'''
 class Ventana_Principal:
 
     def __init__(self, master, graph, images, filename):
@@ -194,10 +260,10 @@ class Ventana_Principal:
         tituloT.place(x=720, y=600)
 
         botIni = Button(ventana, image=images[4], width=43, height=43, command=self.setInicio)
-        botIni .place(x=700, y=630)
+        botIni.place(x=700, y=630)
 
         botFin  = Button(ventana, image=images[5], width=43, height=43, command=self.setFinal)
-        botFin .place(x=800, y=630)
+        botFin.place(x=800, y=630)
 
         botonClearSelec = tkinter.Button(ventana, text="Quitar selección", padx=10, pady=5, command=self.clearSelec, bg="#2F2F2F",
                                  fg="#FF5757",
