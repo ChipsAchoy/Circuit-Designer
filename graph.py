@@ -1,11 +1,9 @@
 '''
     Tercer Proyecto Estructuras de Datos I
 '''
-from ordering_algorithms import *
+
+
 import tkinter
-from tkinter import *
-from tkinter import simpledialog
-from tkinter import messagebox
 from tools import *
 import random
 
@@ -401,6 +399,13 @@ class Graph:
                     if j[x] == elem:
                         return [j[0].d1[0], j[0].d1[1]]
 
+    '''
+    drawLine(self,master,x1,y1,x2,y2,type,cant, name, value, dij=False, col=False)
+        E: las coordenadas de los dos puntos, el tipo de elemento, la cantidad, nombre, valor, un condicional para cuando se usa dikstra
+        y otro condicional para un selector de color.
+        S: Dibuja dos líneas entre los dos puntos con la figura de una resitencia/fuente de poder. 
+        R: ---
+    '''
     def drawLine(self,master,x1,y1,x2,y2,type,cant, name, value, dij=False, col=False):
         direction = [None, None]
         multiplier = 30
@@ -507,7 +512,6 @@ class Graph:
                                y2 + calcDis(y1, y2), False, type)
                 master.create_line(x2, y2, x1, y2, width=5, fill = color)
 
-        print("Usando nueva función")
         print([x1, y1,], [x2,y2])
         if not dij:
             arc = Arc(master, type, name, value, [x1,y1], [x2,y2], direction)

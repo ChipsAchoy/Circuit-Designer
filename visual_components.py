@@ -76,15 +76,16 @@ class Ventana_Menu:
         vent = Ventana_Principal(self.ventana, self.graph, self.images, self.filename)
         
         
-    def import_file(self): 
-        self.filename = filedialog.askopenfilename(initialdir = "C:/Users/INTEL/Documents/GitHub/Circuit-Designer/saves/", title = "Select a File", 
-                                              filetypes = (("Text files", 
-                                                            "*.txt*"), 
-                                                           ("all files", 
-                                                            "*.*")))    
+    def import_file(self):
+
+        self.filename = filedialog.askopenfilename(initialdir = "C:/Users/INTEL/Documents/GitHub/Circuit-Designer/saves/", title = "Select a File",
+                                                  filetypes = (("Text files",
+                                                                "*.txt*"),
+                                                               ("all files",
+                                                                "*.*")))
         print(self.filename)
         self.open_ventana_nueva()
-        
+
 
 class Ventana_Principal:
 

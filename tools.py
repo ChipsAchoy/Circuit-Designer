@@ -1,7 +1,27 @@
+
+
+'''
+    biggestLine = lambda x1, y1, x2, y2
+        E: cuatro coordenadas
+        S: un true si las "x" son mayores a las "y", caso contrario, envía un false
+        R: ----
+'''
 biggestLine = lambda x1, y1, x2, y2: True if abs(x2 - x1) >= abs(y2 - y1) else False
+
+'''
+    calcDis = lambda x1, x2
+        E: dos coordenadas
+        S: la distancia entre estas a usar para crear las imágenes de resistencia o fuente de poder.
+        R: ----
+'''
 calcDis = lambda x1, x2: (abs(x1 - x2) // 2) + (((abs(x1 - x2) // 2) * 0.1) * 4)
 
-
+'''
+searchNameRes(dictionary,list)
+    E: un diccionaro y una lista
+    S: retorna un diccionario ordenado a partir de un diccionario desordenado y una lista ordenada
+    R: la lista debe tener los elementos que están en el diccionario        
+'''
 def searchNameRes(dictionary,
                   list):  # Busca el nombre de las resistencias tomando un diccionario con estas y una lista ordenada de las resistencias
     result = {}
@@ -12,11 +32,18 @@ def searchNameRes(dictionary,
                 result.update(temp)
     return result
 
-
+#Función principal de calcularCuadrícula, esta llama a calcularCuadrícula_aux()
 def calcularCuadricula(num):
     return calcularCuadricula_aux(num, num)
 
 
+'''
+calcularCuadricula_aux(temp1, temp2)
+    E: Dos coordenadas
+    S: la cuadrícula más cercana, tomando en cuenta 50 pixeles, al que se logre acercar primero, se enviará
+    R: ------
+
+'''
 def calcularCuadricula_aux(temp1, temp2):
     if temp1 % 50 == 0:
         return temp1
@@ -25,6 +52,14 @@ def calcularCuadricula_aux(temp1, temp2):
     else:
         return calcularCuadricula_aux(temp1 - 1, temp2 + 1)
 
+
+'''
+createResImage(master, x1, y1, x2, y2, horizontal, type)
+    E: el master del canvas, posiciones de los puntos, un condicional para saber cuando es horizontal o vertical
+    y el tipo de elemento a dibujar.
+    S: el dibujo de una resistencia o la fuente de poder acorde al tamaño de los cables.
+    R: ----
+'''
 
 def createResImage(master, x1, y1, x2, y2, horizontal, type):
     line_size = 3
@@ -91,7 +126,12 @@ def generateSave(graph, filename):
     f.write(out)
     f.close()
 
-
+'''
+loadSave(graph, filename, master)
+    E: Un grafo, el nombre del archivo y el master del canvas
+    S: Carga y dibuja el archivo
+    R: el archivo debe tener elementos a carcar
+'''
 def loadSave(graph, filename, master):
     f = open(filename, "r")
     save = f.read()
