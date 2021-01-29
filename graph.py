@@ -16,22 +16,6 @@ Clase Node: Nodo utilizado en el grafo
         E: Un string que identifia al nodo
         S: -
         R: -
-    setVolt(volt):
-        E: Obtiene un valor flotante para asociarlo al voltaje
-        S: -
-        R: -
-    setCurrent(cur):
-        E: Obtiene un valor flotante para asociarlo al current
-        S: -
-        R: -
-    getVolt():
-        E: -
-        S: Retorna el voltaje asociado al nodo
-        R: -
-    getCurrent():
-        E: -
-        S: Retorna la corriente asociada al nodo
-        R: -
     getId():
         E: -
         S: Retorna el identificar del nodo
@@ -64,13 +48,21 @@ Clase Arc: Arcos utilizados en el grafo, pueden representar tanto una resistenci
     Atributos: value(float), component(String), name(String), ohms(float), volts(float)
 
     Metodos:
-    __init__(component, name, value):
-        E: Dos string y un valor numerico (preferiblemente float)
+    __init__(component, name, value, d1, d2, direction):
+        E: Dos string, un valor numerico (preferiblemente float), dos listas de enteros y una lista de string
         S: -
         R: -
     getValue():
         E: -
         S: El valor asociado al arco (varia con el componente)
+        R: -
+    getCurrent():
+        E: -
+        S: El valor de corriente
+        R: -
+    getVolt():
+        E: -
+        S: El valor del voltaje
         R: -
     getName():
         E: -
@@ -112,10 +104,11 @@ class Arc:
         return self.component
 
 '''
-Clase Grafo: Implementacion del grafo por medio de una matriz de adyacencia y una lista que contiene la referencia a los nodos
+Clase Graph: Implementacion del grafo por medio de una matriz de adyacencia y una lista que contiene la referencia a los nodos
     Atributos: adMatrix(matriz tridimensional), nodes(lista), nodesCount(entero)
 
     Metodos:
+    __init__()
     checkNode(ident):
         E: Identificador de un nodo (String)
         S: Boolean que indica si el nodo esta en el grafo
@@ -124,12 +117,12 @@ Clase Grafo: Implementacion del grafo por medio de una matriz de adyacencia y un
         E: Identificador de un nodo (String) 
         S: La referencia al objeto Node
         R: -
-    addNode(ident):
-        E: Identificador del nuevo nodo
+    addNode(master, x, y, ident):
+        E: canvas donde se dibuja el nodo, posicion en x y en y en escala de la cuadricula, Identificador del nuevo nodo
         S: -
         R: -
-    addArc(id1, id2, component, name, value):
-        E: Las dos entradas iniciales son los identificadores de los nodos en el camino id1->id2. Luego se agrega el tipo de componente, nombre y valor asociado
+    addArc(master, id1, id2, component, name, value, d1, d2):
+        E: canvas donde se dibuja el arco, Las dos entradas iniciales son los identificadores de los nodos en el camino id1->id2. Luego se agrega el tipo de componente, nombre, valor asociado y las dos posiciones inicial y final
         S: -
         R: -
     deleteNode(ident):
@@ -144,11 +137,16 @@ Clase Grafo: Implementacion del grafo por medio de una matriz de adyacencia y un
         E: Una lista de elementos y una funcion para evaluar dichos elementos
         S: Retorna el elemento menor o mayor segun sea necesario
         R: -
-    dijkstra(id1, id2, find):
-        E: Los identificadores de los nodos entre los que se busca el camino especifico, mientras que la variable find indica si es el mas largo o mas corto
+    dijkstra(find, master):
+        E: la variable find indica si es el mas largo o mas corto, master es el canvas que se toma de referencia
         S: El camino mas corto o largo entre los nodos segun lo deseado 
         R: -
     
+    drawLine(self,master,x1,y1,x2,y2,type,cant, name, value, dij=False, col=False)
+        E: las coordenadas de los dos puntos, el tipo de elemento, la cantidad, nombre, valor, un condicional para cuando se usa dijkstra
+        y otro condicional para un selector de color.
+        S: Dibuja dos líneas entre los dos puntos con la figura de una resitencia/fuente de poder. 
+        R: ---
 '''
 
 class Graph:
@@ -399,13 +397,7 @@ class Graph:
                     if j[x] == elem:
                         return [j[0].d1[0], j[0].d1[1]]
 
-    '''
-    drawLine(self,master,x1,y1,x2,y2,type,cant, name, value, dij=False, col=False)
-        E: las coordenadas de los dos puntos, el tipo de elemento, la cantidad, nombre, valor, un condicional para cuando se usa dikstra
-        y otro condicional para un selector de color.
-        S: Dibuja dos líneas entre los dos puntos con la figura de una resitencia/fuente de poder. 
-        R: ---
-    '''
+
     def drawLine(self,master,x1,y1,x2,y2,type,cant, name, value, dij=False, col=False):
         direction = [None, None]
         multiplier = 30

@@ -109,6 +109,10 @@ clase Ventana_Principal
         master (Tk), graph(Graph), images(PhotoImage list), canvas (Canvas), position(int list), const(int), size(int), dibujando_linea(boolean),
         dibujando(boolean), placeNodo(boolean), dijAs(boolean), compName(str), compValue(int)
     Metodos:
+        __init__(master, graph, images, filename): Clase constructora
+            E: un Tk, un objeto Graph, una lista de objetos PhotoImage, un nombre de archivo
+            S: -
+            R: -
         clearSelec(): Deselecciona ambos botones de Dijsktra
         setInicio(): Selecciona un nodo inicial para realizar dijkstra
         setFinal(): Selecciona un nodo final para realizar dijkstra
