@@ -400,6 +400,7 @@ class Graph:
 
 
     def drawLine(self,master,x1,y1,x2,y2,type,cant, name, value, dij=False, col=False):
+        print("#############################################################")
         direction = [None, None]
         multiplier = 30
         label_position = [0,0]
@@ -461,9 +462,10 @@ class Graph:
             if x1 - x2 == 0:  # Linea recta
                 label_position = [x1+20*cant, max([y1, y2]) - abs(y1 - y2) // 2]
                 direction[1] = "vertical"
+                print("Vertical")
                 x1 = x1 - cant * multiplier
                 master.create_line(x1, y1, x1+cant * multiplier, y1, width=5, fill = color)
-                master.create_line(x1, y1, x2+cant * multiplier, y1, width=5, fill = color)
+                master.create_line(x1, y2, x2, y2, width=5, fill = color)
                 if y1 - y2 > 0:
                     master.create_line(x1, y1, x1, y2 + calcDis(y1, y2),
                                             width=5, fill = color)
